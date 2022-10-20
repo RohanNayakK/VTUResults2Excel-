@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <link href="../styles.css" rel="stylesheet">
+    <title>VTU Results2Excel Tool </title>
+  </head>
+  <body>
+    <div id="mainNav" class="navBar">
+      <i class="fa-solid fa-graduation-cap"></i>
+      <span class="appName">VTU Results<span class="twoNumTitle">2</span>Excel Tool</span>
+    </div>
+    <div class="vtuNav">
+      <img class="vtuLogoImg" alt="VTU" src="../assets/vtuLogo.png" />
+    </div>
+
+    <div class="homeMenuOptions">
+
+      <h3 style="color: white">MAIN MENU</h3>
+      <a href="./vtuConnecAPI.html">
+      <button id="vtuConnectAPI" >Extract from VTU Connect API</button>
+      </a>
+
+      <button id="openVtuResultBtn">Extract From VTU Results Original Website <mark id="betaTag">Beta</mark></button>
+
+
+
+
+      <a href="./excelRead.html">
+        <button class="readExcelBtn">Read Data</button>
+      </a>
+      
+      <a href="./usnRangeInput.html">
+        <button class="readExcelBtn">Enter Range</button>
+      </a>
+
+
+    </div>
+
+    </div>
+  <footer class="footerTag">&copy All rights Reserved - Designed and Developed by Rohan Nayak & Kedar Pai ( CEC )</footer>
+
+    <script>
+      let openVtuResultBtn=document.getElementById("openVtuResultBtn");
+      openVtuResultBtn.addEventListener("click",()=>{
+        window.Bridge.openResult()
+      })
+    </script>
+  </body>
+</html>

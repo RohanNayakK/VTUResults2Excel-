@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VTU Results2Excel Tool </title>
+    <link href="../styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+<div id="mainNav" class="navBar">
+    <i class="fa-solid fa-graduation-cap"></i>
+    <span class="appName">VTU Results<span class="twoNumTitle">2</span>Excel Tool</span>
+</div>
+<div class="vtuNav">
+    <img class="vtuLogoImg" alt="VTU" src="../assets/vtuLogo.png" />
+</div>
+
+<div class="MainContent">
+    <div id="errorMessageForm1"></div>
+    <form id="detailsForm">
+        <fieldset id="detailsFormFieldSet">
+            <legend>Fill College/Class Details</legend>
+            <div  class="inputWrapper">
+                <label class="flabel" for="collegeCode">College Code :</label>
+                <input maxlength="3" id="collegeCodeInput" required placeholder="Enter college code" name="collegeCode" type="text"   />
+            </div>
+
+            <div class="inputWrapper">
+                <label class="flabel" for="year">Year :</label>
+                <input maxlength="2"  id="syear" required placeholder="Enter year" name="year" type="number" />
+            </div>
+
+            <div class="inputWrapper">
+                <label class="flabel" for="branch">Branch :</label>
+                <input maxlength="3"  id="sbranch" required placeholder="Enter branch code" name="branch" type="text"   />
+            </div>
+
+            <div class="inputWrapper">
+                <label class="flabel" for="startUSN">Starting USN:</label>
+                <input maxlength="3"  id="sfusn" required placeholder="Enter first student USN" name="startUSN" type="number" />
+            </div>
+            <div class="inputWrapper">
+                <label class="flabel" for="endUSN">Ending USN :</label>
+                <input maxlength="3" id="slusn" required placeholder="Enter last student USN" name="endUSN" type="number" />
+            </div>
+
+            <div class="centreWrapper">
+                <button type="reset" class="resetbtn">
+                    <i class="fa-solid fa-arrow-rotate-right"></i>
+                    Reset</button>
+                <button class="subBtn">
+                    <i class="fa-solid fa-arrow-right-long"></i>
+                    Submit</button>
+
+            </div>
+        </fieldset>
+    </form>
+
+
+    <form id="detailsForm2">
+        <fieldset id="detailsFormFieldSet2">
+            <legend >Select required exam</legend>
+            <div  class="inputWrapper">
+                <label class="flabel">Available Result :</label>
+                <strong id="availableResult"></strong>
+            </div>
+            <div  class="inputWrapper">
+                <label class="flabel" for="folderPath">Path to save the excel file:</label>
+                <input required type="text" placeholder="Enter path" id="folderPath" name="folderPath"/>
+            </div>
+
+            <div class="centreWrapper">
+                <button id="backBtn" class="resetbtn">
+                    <i class="fa-solid fa-arrow-left-long"></i>
+                    Back</button>
+                <button type="submit" class="subBtn">
+                    <i class="fa-solid fa-file-excel"></i>
+                    Generate Excel</button>
+            </div>
+
+            <div id="loadingContainer" class="centreWrapper">
+                <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <p>Generating please wait...</p>
+            </div>
+        </fieldset>
+    </form>
+
+    <a href="./index.html">
+        <button class="subBtn">
+            <i class="fa-solid fa-house"></i>
+            Back to home</button>
+    </a>
+
+
+
+</div>
+<footer class="footerTag">&copy All rights Reserved - Designed and Developed by Rohan Nayak & Kedar Pai ( CEC )</footer>
+
+<script  src="../renderer.js"></script>
+</body>
+</html>

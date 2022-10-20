@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>VTU Results2Excel Tool </title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body>
+<div id="mainNav" class="navBar">
+    <i class="fa-solid fa-graduation-cap"></i>
+    <span class="appName">VTU Results<span class="twoNumTitle">2</span>Excel Tool</span>
+</div>
+<div class="vtuNav">
+    <img class="vtuLogoImg" alt="VTU" src="../assets/vtuLogo.png" />
+</div>
+
+<div class="generateExcel">
+<h1>Generate Excel from extracted data</h1>
+    <form id="generateForm">
+        <fieldset>
+            <legend>Generate :</legend>
+            <label for="path">Enter the Folder Path :</label>
+            <input id="filePathInput" required placeholder="Enter path " type="text" name="path">
+
+            <input type="submit" value="Submit">
+            <div id="loadingContainer" class="centreWrapper">
+                <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <p>Generating please wait...</p>
+            </div>
+        </fieldset>
+
+    </form>
+</div>
+
+
+<footer class="footerTag">&copy All rights Reserved - Designed and Developed by Rohan Nayak & Kedar Pai ( CEC )</footer>
+
+<script>
+    let form= document.getElementById("generateForm")
+
+    let loader = document.getElementById("loadingContainer")
+    form.addEventListener("submit",(e)=>{
+        loader.style.display ="flex"
+        let filePathInp= document.getElementById("filePathInput").value
+        let formDataObj={
+            path: filePathInp
+        }
+        window.Bridge.sendGenerateNewExcel(formDataObj)
+    })
+</script>
+</body>
+</html>

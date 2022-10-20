@@ -1,0 +1,19 @@
+{
+	"name": "vtuResults2ExcelTool",
+	"author": "Rohan Nayak & Kedar Pai",
+	"version": "1.0.0",
+	"main": "main.js",
+	"dependencies": {
+		"@electron/remote": "^2.0.8",
+		"jquery": "^3.6.0",
+		"xlsx": "https://cdn.sheetjs.com/xlsx-latest/xlsx-latest.tgz"
+	},
+	"scripts": {
+		"start": "electron .",
+		"buildNewPythonExe" : "pyinstaller --onefile newFetch.py",
+		"build": "electron-packager . VTUResults2ExcelTool --arch=x64 --asar"
+	},
+	"devDependencies": {
+		"electron": "^20.1.0"
+	}
+}
