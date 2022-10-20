@@ -5,7 +5,7 @@
 	"main": "main.js",
 	"dependencies": {
 		"@electron/remote": "^2.0.8",
-		"jquery": "^3.6.0",
+		"jquery": "^3.6.1",
 		"xlsx": "https://cdn.sheetjs.com/xlsx-latest/xlsx-latest.tgz"
 	},
 	"scripts": {
