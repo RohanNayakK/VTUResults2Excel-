@@ -74,7 +74,7 @@ let menuTemplate = [
             {
                 label: 'Home',
                 click: async () => {
-                    mainWindow.loadFile(path.join(__dirname, './views/index.html'))
+                    mainWindow.loadFile(path.join(__dirname, '/views/index.html'))
 
 
                 }
@@ -102,15 +102,6 @@ let menuTemplate = [
 
         click: async () => {
             mainWindow.webContents.send('next', {});
-
-        }
-    },
-
-    {
-        label : "Extract All In USN Range",
-
-        click: async () => {
-            mainWindow.webContents.send('massExtract', {});
 
         }
     },
@@ -155,7 +146,7 @@ function fetchResult(dataObject,pythonExecutableFileName) {
 
 ipcMain.on("callPython",async (event,data)=>{
     await fetchResult(data,'fetch.exe')
-    mainWindow.loadFile(path.join(__dirname, './views/success.html'))
+    mainWindow.loadFile(path.join(__dirname, '/views/success.html'))
   })
 
 
@@ -173,7 +164,7 @@ ipcMain.on("callPython",async (event,data)=>{
 ipcMain.on("callNewPython",async (event,data)=>{
 
     await fetchResult(data,'newFetch.exe')
-    mainWindow.loadFile(path.join(__dirname, './views/success.html'))
+    mainWindow.loadFile(path.join(__dirname, '/views/success.html'))
 })
 
 
@@ -189,7 +180,7 @@ ipcMain.on("sentData",(event,data)=>{
 
      fs.writeFileSync('data.json', writeData);
 
-     mainWindow.loadFile(path.join(__dirname, './views/generateExcel.html'))
+     mainWindow.loadFile(path.join(__dirname, '/views/generateExcel.html'))
 
  })
 
@@ -203,7 +194,7 @@ app.whenReady().then(() => {
   createWindow()
 
     mainWindow.webContents.on('did-fail-load', (_event ) => {
-        mainWindow.loadFile(path.join(__dirname, './views/errorPage.html')).then(()=>{})
+        mainWindow.loadFile(path.join(__dirname, '/views/errorPage.html')).then(()=>{})
 
     });
 

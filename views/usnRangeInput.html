@@ -24,8 +24,8 @@
    <form id="usnRangeForm">
         <fieldset>
             <legend>Enter USN Details :</legend>
-            <label for="path">Enter the Folder Path :</label>
-            
+
+
             <div class="inputWrapper">
                 <label  class="flabel" for="startUSN">Starting USN:</label>
                 <input id="startUSN" required placeholder="Enter first student USN" name="startUSN" type="text" />
@@ -35,14 +35,14 @@
                 <input id="endUSN" required placeholder="Enter last student USN" name="endUSN" type="text" />
             </div>
 
-        
+
                 <input id="usnRangeSubmit" type="submit" value="Submit">
-           
+
             </form>
-        
+
         </fieldset>
 
-   
+
 </div>
 
 
@@ -63,7 +63,7 @@
         let startUSNValue=document.getElementById("startUSN").value
         let USN_FIXED_PART = startUSNValue.slice(0,7)
 
-    
+
         let formDataObj={
             startUSNValue:startUSNValue.slice(7,11),
             endUSNValue:endUSNValue.slice(7,11),
