@@ -10,7 +10,7 @@
 	},
 	"scripts": {
 		"start": "electron .",
-		"buildNewPythonExe" : "pyinstaller --onefile newFetch.py",
+		"buildNewPythonExe" : "pyinstaller --onefile python/newFetch.py",
 		"build": "electron-packager . VTUResults2ExcelTool --arch=x64 --asar"
 	},
 	"devDependencies": {
