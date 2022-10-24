@@ -14,6 +14,6 @@
 		"build": "electron-packager . VTUResults2ExcelTool --arch=x64 --asar"
 	},
 	"devDependencies": {
-		"electron": "^20.1.0"
+		"electron": "^21.2.0"
 	}
 }
