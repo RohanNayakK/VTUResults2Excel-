@@ -90,8 +90,7 @@ let menuTemplate = [
     {
         label : "Get Token/Captcha",
         click: async () => {
-            console.log("val is ",SavedUSNRange)
-            mainWindow.webContents.send('getValue',SavedUSNRange);
+            mainWindow.webContents.send('getValue',{});
             new Notification({ title: "NOTE:", body: "Captcha and Token Saved" }).show()
         }
     },
@@ -153,7 +152,7 @@ function fetchResult(dataObject,pythonExecutableFileName) {
 
     })
   };
-  
+
 ipcMain.on("callPython",async (event,data)=>{
     await fetchResult(data,'fetch.exe')
     mainWindow.loadFile(path.join(__dirname, './views/success.html'))
@@ -193,7 +192,7 @@ ipcMain.on("sentData",(event,data)=>{
      mainWindow.loadFile(path.join(__dirname, './views/generateExcel.html'))
 
  })
- 
+
 
 app.whenReady().then(() => {
     let menu = Menu.buildFromTemplate(menuTemplate);
