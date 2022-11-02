@@ -22,17 +22,24 @@
 <div class="generateExcel">
 <h1>Generate Excel from extracted data</h1>
     <form id="generateForm">
-        <fieldset>
+        <fieldset id="browsePathFieldSet">
             <legend>Generate :</legend>
             <label for="path">Enter the Folder Path :</label>
             <input id="filePathInput" required placeholder="Enter path " type="text" name="path">
-
-            <input type="submit" value="Submit">
+            
+            <h3>OR</h3>
+            <div onClick="browsePathHandler()" class="browseButton">
+                <i class="fa-solid fa-folder-open"></i>
+                Browse Path
+            </div>
             <div id="loadingContainer" class="centreWrapper">
                 <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                 <p>Generating please wait...</p>
             </div>
+    
+        
         </fieldset>
+        <input id="generateSubmitBtn" type="submit" value="Submit">
 
     </form>
 </div>
@@ -52,6 +59,13 @@
         }
         window.Bridge.sendGenerateNewExcel(formDataObj)
     })
+
+
+    const browsePathHandler=()=>{
+        window.Bridge.sendBrowsePath()
+
+    }
+
 </script>
 </body>
 </html>

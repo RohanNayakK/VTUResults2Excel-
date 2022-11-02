@@ -9,6 +9,67 @@ body{
 }
 
 
+#version{
+  background-color: lightsteelblue;
+  padding: 2px;
+  font-size: small;
+  margin-left: 2px;
+  color: darkblue;
+}
+
+#helpBtn{
+  background-color: aquamarine;
+  color: #222222;
+  font-weight: bold;
+}
+
+.whiteText{
+color: white;
+}
+
+#browsePathFieldSet{
+  display: flex;
+  padding: 20px;
+  width: 300px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#browsePathFieldSet>input{
+  padding: 5px;
+  width: 100%;
+}
+
+#generateSubmitBtn{
+  padding: 5px;
+  width: 100%;
+  background-color: palegreen;
+  color: #222222;
+  font-weight: bold;
+  border: none;
+}
+
+
+.browseButton{
+  cursor: pointer;
+  color: #000;
+  padding: 5px;
+
+  width: 100%;
+  text-align: center;
+  border-radius: 3px;
+  background :whitesmoke;
+  font-size:small;
+}
+
+.browseButton:hover{
+
+  background-color:lightgray;
+}
+
+
 .navBar{
     display: flex;
     background-color:white;

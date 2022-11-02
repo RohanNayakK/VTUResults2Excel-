@@ -1,14 +1,23 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow,screen,Menu,Notification } = require('electron')
 const path = require('path')
+const Alert = require("electron-alert");
 const { ipcMain } = require('electron')
 const { execFile } = require('child_process');
 const fs = require("fs");
+const { dialog } = require('electron')
+
+
+
 
 let SavedUSNRange={}
 
 
 let mainWindow
+
+let autoNextBot;
+
+let isBotPaused=false;
 
 function createWindow () {
   // Create the browser window.
@@ -27,6 +36,9 @@ function createWindow () {
 
 
   })
+
+
+
 
 
   // and load the index.html of the app.
@@ -88,31 +100,147 @@ let menuTemplate = [
     },
 
     {
-        label : "Get Token/Captcha",
-        click: async () => {
-            mainWindow.webContents.send('getValue',{});
-            new Notification({ title: "NOTE:", body: "Captcha and Token Saved" }).show()
-        }
-    },
+        label: 'Options',
+        submenu: [
+            {
+                label : "Get Token&Captcha",
+                click: async () => {
+                    mainWindow.webContents.send('getValue',{});       
+                    showTokenCaptchaAlert()
+
+                }
+            },
+
+            {
+                label : "Manual Next",
+                click: async () => {
+                    mainWindow.webContents.send('next', {});
+                }
+            },
+
+            {
+                label : "Auto Next (New!)",
+        
+                click: async () => {
+                    let count =1
+                     autoNextBot= setInterval(()=>{
+                        if(count<=61 && !isBotPaused){
+                            mainWindow.webContents.send('next', {});
+                            count++
+                            if(count===61){
+                                clearInterval(autoNextBot)
+                            }
+                        }               
+        
+                    },2000)
+                  
+                }
+            },
+            {
+                label : "Send Data",
+                click: async () => {
+                    mainWindow.webContents.send('sendData', {});
+        
+                }
+            }
+
+        ]
+    }
+   ,
+
+];
+
+function showTokenCaptchaAlert(){
+    let alert = new Alert();
+    let token=null
+    let captcha=null
+
+    mainWindow.webContents
+     .executeJavaScript('window.sessionStorage.getItem("token");', true)
+     .then(result => {
+        console.log(result)
+         token= result
+
+         mainWindow.webContents
+         .executeJavaScript('window.sessionStorage.getItem("captcha");', true)
+         .then(result => {
+             console.log(result)
+             captcha= result
+
+
+             let swalOptions = {
+                title: "Token & Captcha",
+                text: `Session Variables Recorded :\n Token: ${token} \n Captcha: ${captcha}`,
+                icon: "success",
+                showCancelButton: false,
+            
+            };
+            
+            let promise = alert.fireWithFrame(swalOptions,"Token & Captcha" ,null, true);
+            promise.then((result) => {
+                if (result.value) {
+                    // confirmed
+        
+                }
+            })
+            
+        });
+
+
+        
+    });
+   
+
+    
+
+    
+}
 
 
 
-    {
-        label : "Next",
-
+let contextMenuTemplate = [
+     {
+        label : "Manual Next",
         click: async () => {
             mainWindow.webContents.send('next', {});
-
         }
     },
+        {
+                label : "Get Token&Captcha",
+                click: async () => { 
+                    mainWindow.webContents.send('getValue',{});
+                    showTokenCaptchaAlert()
+                }
+            },
 
-    {
-        label : "Send Data",
-        click: async () => {
-            mainWindow.webContents.send('sendData', {});
+           
 
-        }
-    },
+            {
+                label : "Auto Next (New!)",
+        
+                click: async () => {
+                    let count =1
+                     autoNextBot= setInterval(()=>{
+                        if(count<=61 && !isBotPaused){
+                            mainWindow.webContents.send('next', {});
+                            count++
+                            if(count===61){
+                                clearInterval(autoNextBot)
+                            }
+                        }               
+        
+                    },2000)
+                  
+                }
+            },
+            {
+                label : "Send Data",
+                click: async () => {
+                    mainWindow.webContents.send('sendData', {});
+        
+                }
+            }
+
 
 
 ];
@@ -160,11 +288,49 @@ ipcMain.on("callPython",async (event,data)=>{
 
 
 
+  ipcMain.on("serverRefreshWait",async (event,data)=>{
+    console.log("Pause Bot")
+    isBotPaused=true
+    mainWindow.webContents.send('showWaitTimer', {});
+  })
+
+
+  ipcMain.on("serverRefreshOverResumeBot",async (event,data)=>{
+    console.log("Resume Bot")
+    isBotPaused=false
+  })
+
+
+  
+  ipcMain.on("openDialog",async (event,data)=>{
+    dialog.showOpenDialog(mainWindow, {
+        properties: [ 'openDirectory']
+      }).then(result => {
+
+        let path = result.filePaths[0].replace(/\\/g, "/");
+        console.log(path)
+
+        mainWindow.webContents
+        
+
+    .executeJavaScript(`document.getElementById("filePathInput").value="${String(path)}/"`, true)
+    .then(result => {
+        captcha= result
+       
+   });
+        console.log(result.filePaths)
+      }).catch(err => {
+        console.log(err)
+      })
+  })
+
+
 //new executable
 ipcMain.on("callNewPython",async (event,data)=>{
 
     await fetchResult(data,'newFetch.exe')
     mainWindow.loadFile(path.join(__dirname, '/views/success.html'))
+    new Notification({ title: "NOTE:", body: "Excel File Generated , Check file in specified path" }).show()
 })
 
 
@@ -184,6 +350,16 @@ ipcMain.on("sentData",(event,data)=>{
 
  })
 
+ 
+  
+  // context menu on right click
+  ipcMain.on('show-context-menu', (event) => {
+   
+    const menu = Menu.buildFromTemplate(contextMenuTemplate)
+    menu.popup(BrowserWindow.fromWebContents(event.sender))
+  })
+
+
 
 app.whenReady().then(() => {
     let menu = Menu.buildFromTemplate(menuTemplate);
@@ -191,12 +367,14 @@ app.whenReady().then(() => {
 
 
     Menu.setApplicationMenu(menu);
-  createWindow()
+     createWindow()
 
     mainWindow.webContents.on('did-fail-load', (_event ) => {
         mainWindow.loadFile(path.join(__dirname, '/views/errorPage.html')).then(()=>{})
 
     });
+
+    
 
 
     screenElectron= screen;
@@ -212,6 +390,7 @@ app.whenReady().then(() => {
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 })
+
 
 
 app.on('open-file', function () { console.log(arguments); });

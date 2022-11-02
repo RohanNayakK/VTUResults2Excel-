@@ -1,3 +1,5 @@
+
+
 let detailsForm= document.getElementById('detailsForm')
 let detailsFormFieldSet= document.getElementById('detailsFormFieldSet')
 let detailsForm2= document.getElementById('detailsForm2')
@@ -11,6 +13,8 @@ const startusn= document.getElementById("sfusn")
 const lastusn = document.getElementById("slusn")
 const path =document.getElementById("folderPath")
 let latestResult;
+
+
 
 
 
@@ -125,6 +129,8 @@ collegeCode.addEventListener("input",(event)=>{
 branch.addEventListener("input",(event)=>{
   event.target.value = event.target.value.toUpperCase()
 })
+
+
 
 
 
