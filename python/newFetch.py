@@ -8,7 +8,7 @@ filePath = sys.argv[1]
 
 # Opening JSON file
 f = open('data.json')
-  
+
 # returns JSON object as a dictionary
 data = json.load(f)
 
@@ -45,7 +45,7 @@ for i in data:
             if(k == 1):
                 sheet_obj['G2']= i['subjects'][1]['subjectName']
                 sheet_obj['G3']= i['subjects'][1]['subjectCode']
-        
+
             if(k == 2):
                 sheet_obj['K2']= i['subjects'][2]['subjectName']
                 sheet_obj['K3']= i['subjects'][2]['subjectCode']
@@ -94,7 +94,7 @@ for i in data:
             subEA.value=i['subjects'][j]['eaMarks']
             subTotal.value=i['subjects'][j]['totalMarks']
             subResult.value=i['subjects'][j]['result']
-    
+
     #change of row
     subIaCol=-1
     subEaCol=0
@@ -103,7 +103,7 @@ for i in data:
     row+=1
 
 #save file
-wb_obj.save(filePath+'newTemplate.xlsx')
+ 
 
 
 
