@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
-    <link href="../styles.css" rel="stylesheet">
+    <link href="../styles/styles.css" rel="stylesheet">
     <title>VTU Results2Excel Tool </title>
   </head>
   <body>
@@ -23,18 +23,14 @@
       <h3 style="color: white">
         <i class="fa-solid fa-bars"></i>
         MAIN MENU</h3>
-      <a href="./vtuConnecAPI.html">
-      <button id="vtuConnectAPI" >
-        <i class="fa-solid fa-globe"></i>
-        Extract from VTU Connect API</button>
-      </a>
+
+      <h3 style="color: white">Internet Connection status : <strong style="color: white" id='status'></strong></h3>
+
 
       <button id="openVtuResultBtn">
         <i class="fa-solid fa-building-columns"></i>
-        Extract From VTU Results Original Website <mark id="betaTag">New</mark></button>
-
-
-
+        Extract Results
+        </button>
 
       <a href="./excelRead.html">
         <button class="readExcelBtn">
@@ -42,11 +38,6 @@
           Read Data</button>
       </a>
 
-      <a href="./usnRangeInput.html">
-        <button class="readExcelBtn">
-          <i class="fa-solid fa-robot"></i>
-          Automated Extraction</button>
-      </a>
 
       <a href="./help.html">
         <button class="readExcelBtn" id="helpBtn">
@@ -59,15 +50,30 @@
 
     </div>
 
-    </div>
+
   <footer class="footerTag">&copy All rights Reserved - Designed and Developed by Rohan Nayak & Kedar Pai ( CEC )</footer>
 
     <script>
       let openVtuResultBtn=document.getElementById("openVtuResultBtn");
       openVtuResultBtn.addEventListener("click",()=>{
         window.Bridge.openResult()
-
       })
+
+      const updateOnlineStatus = () => {
+        document.getElementById('status').innerHTML = navigator.onLine ? 'Connected ' : 'Not Connected'
+        if(navigator.onLine){
+          document.getElementById('status').style.color = '#00ff00'
+        }
+        else {
+          document.getElementById('status').style.color = 'red'
+        }
+
+      }
+
+      window.addEventListener('online', updateOnlineStatus)
+      window.addEventListener('offline', updateOnlineStatus)
+
+      updateOnlineStatus()
     </script>
   </body>
 </html>

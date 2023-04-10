@@ -11,8 +11,8 @@
 	},
 	"scripts": {
 		"start": "electron .",
-		"buildNewPythonExe": "pyinstaller --onefile python/newFetch.py",
-		"build": "electron-packager . VTUResults2ExcelTool --arch=x64 --asar"
+		"buildPythonExecutable": "pyinstaller --onefile python/canaraFetch.py && npm run cleanAfterBuild",
+		"cleanAfterBuild": "rd /s /q build && cd dist && copy .\\canaraFetch.exe ..\\python\\ && cd .. && rd /s /q dist && del canaraFetch.spec"
 	},
 	"devDependencies": {
 		"electron": "^20.1.0"

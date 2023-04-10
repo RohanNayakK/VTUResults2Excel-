@@ -1,38 +1,33 @@
-//Imports
+//Import Modules
 const { ipcRenderer, contextBridge } = require("electron")
 let XLSX = require('xlsx');
 
 
+//Window Event Listeners
 
-
+//Auto Save Token & Captcha on Form Submit
 window.addEventListener("submit",()=>{
     //if Token Exists!
     if(document.querySelector('[name="Token"]').value){
         let tokenValue = document.querySelector('[name="Token"]').value
         let lnsValue = document.querySelector('[name="lns"]').value
         let captchaValue = document.querySelector('[name="captchacode"]').value
-    
-    
+
+
         window.sessionStorage.setItem("token",tokenValue)
         window.sessionStorage.setItem("captcha",captchaValue)
         window.sessionStorage.setItem("usnFixedPart",lnsValue.substr(0,7))
         window.sessionStorage.setItem("usnNumPart",lnsValue.slice(7))
     }
-   
+
 })
 
-
-
-// renderer
+//Custom Context Menu
 window.addEventListener('contextmenu', (e) => {
-    console.log("right click")
     e.preventDefault()
     ipcRenderer.send('show-context-menu')
   })
-  
-  ipcRenderer.on('context-menu-command', (e, command) => {
-    // ...
-  })
+
 
 
 //Variables Declaration
@@ -74,18 +69,9 @@ const updateUSN=()=> {
 }
 
 
-//Event Emitters
-
-let sendSubmit=(dataObj)=>{
-  ipcRenderer.send("callPython",dataObj)
-}
-
-let sendUSNRange=(dataObj)=>{
-    ipcRenderer.send("saveUSNRange",dataObj)
-  }
-
+//Event Emitters Handlers
 let sendGenerateNewExcel=(dataObj)=>{
-    ipcRenderer.send("callNewPython",dataObj)
+    ipcRenderer.send("callPythonExe",dataObj)
 }
 
 let sendReadExcel=(data)=>{
@@ -116,13 +102,7 @@ let sendBrowsePath=()=>{
 }
 
 
-
-
-
-
 //Event Handlers
-
-
 
 ipcRenderer.on('sendData', function (evt, data) {
     ipcRenderer.send("sentData",{
@@ -138,7 +118,7 @@ ipcRenderer.on('errorMessage', function (evt, data) {
 })
 
 ipcRenderer.on('getValue', function (evt, data) {
-    //Manual Store 
+    //Manual Store
     if(document.querySelector('[name="Token"]')?.value)
     {
     let tokenValue = document.querySelector('[name="Token"]').value
@@ -151,13 +131,6 @@ ipcRenderer.on('getValue', function (evt, data) {
     window.sessionStorage.setItem("usnFixedPart",lnsValue.substr(0,7))
     window.sessionStorage.setItem("usnNumPart",lnsValue.slice(7))
     }
-
-    // alert(`
-    // Session Values Recorded \n
-    // Token: ${tokenValue} \n Captcha: ${captchaValue}`)
-
-    // const Alert = require("electron-alert");
-
 
 });
 
@@ -172,7 +145,7 @@ ipcRenderer.on('showWaitTimer',  function (evt, data) {
         <h1>Please Wait for 30 secs...</h1>
         `
         document.body.append(overlayContainer)
-       
+
         let time = 30
         let timer = setInterval(() => {
             overlayContainer.innerHTML =
@@ -186,56 +159,13 @@ ipcRenderer.on('showWaitTimer',  function (evt, data) {
                 overlayContainer.remove()
                 clearInterval(timer)
                 ipcRenderer.send("serverRefreshOverResumeBot",{})
-                
+
             }
         }, 1000);
 
 });
 
-
-let Time_Counter_20=false;
-let Time_Counter_40=false;
-
-let next_USN_NUM_PART;
-
 ipcRenderer.on('next',  function (evt, data) {
-
-    // if(next_USN){
-    //      next_USN_NUM_PART =Number(next_USN.slice(7))
-    // }
-   
-
-    // if( ( next_USN_NUM_PART===20 && !Time_Counter_20 ) || ( next_USN_NUM_PART===40 && !Time_Counter_20  )  ){
-    //     //overlay container on top full screen
-    //     let overlayContainer=document.createElement("div")
-    //     overlayContainer.setAttribute("id","overlay")
-    //     overlayContainer.setAttribute("style","position: fixed; display:flex;top:0;left:0;height:100%;width:100%;background-color:rgba(0,0,0,0.7);z-index:1000;color:white;font-size:2rem;align-items:center;justify-content:center;textAllign:center")
-    //     overlayContainer.innerHTML=`<h1>Please Wait for 30 secs...</h1>`
-    //     document.body.append(overlayContainer)
-       
-    //     let time = 30
-    //     let timer = setInterval(() => {
-    //         overlayContainer.innerHTML =`<h1>Please Wait for ${time} secs...</h1>`
-    //         time -= 1
-    //         if(time===0){
-
-    //             if(next_USN_NUM_PART ===20){
-    //                 Time_Counter_20=true
-    //             }
-    //             else if(next_USN_NUM_PART ===40){
-    //                 Time_Counter_40=true
-    //             }
-
-    //             overlayContainer.remove()
-    //             clearInterval(timer)
-                
-    //         }
-    //     }, 1000);
-
-    //     return 
-       
-    // }
-
 
     let studentData=[]
 
@@ -276,8 +206,8 @@ ipcRenderer.on('next',  function (evt, data) {
 
     if(positiveResponse){
         updateUSN()
-        
-       
+
+
 
         studentData = document.getElementsByTagName('tbody')[0].children
         marksData = document.getElementsByClassName('divTableBody')[0].children
@@ -326,9 +256,9 @@ ipcRenderer.on('next',  function (evt, data) {
             //when invalid USN -   "University Seat Number is not available or Invalid..!"
 
 
-           
 
-            
+
+
             if(html.split(">")[0].trim()!=="<!DOCTYPE html"){
 
                 let resMessage = html.split("(")[1].split(")")[0].trim()
@@ -342,7 +272,7 @@ ipcRenderer.on('next',  function (evt, data) {
                     //Set True to skip and continue to the next USN
                     positiveResponse=true
 
-                    
+
                 }
                 else {
                     //alert(unqoutedResponseString)
@@ -366,19 +296,18 @@ ipcRenderer.on('next',  function (evt, data) {
 })
 
 
+
 //Bridge Object
 let indexBridge={
-  sendSubmit :sendSubmit,
-  sendReadExcel:sendReadExcel,
-  openResult : openResult,
-  sendGenerateNewExcel:sendGenerateNewExcel,
-  sendUSNRange:sendUSNRange,
-  sendServerRefresh : sendServerRefresh,
-  sendBrowsePath:sendBrowsePath,
+    openResult : openResult,
+    sendReadExcel:sendReadExcel,
+    sendGenerateNewExcel:sendGenerateNewExcel,
+    sendServerRefresh : sendServerRefresh,
+    sendBrowsePath:sendBrowsePath,
 }
 
 
-//context bridge
+//Context bridge
 contextBridge.exposeInMainWorld("Bridge",indexBridge)
 
 

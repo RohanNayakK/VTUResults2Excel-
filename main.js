@@ -3,22 +3,19 @@ const {app, BrowserWindow,screen,Menu,Notification } = require('electron')
 const path = require('path')
 const Alert = require("electron-alert");
 const { ipcMain } = require('electron')
-const { execFile } = require('child_process');
+const { execFile,spawn } = require('child_process');
 const fs = require("fs");
 const { dialog } = require('electron')
 
 
-
-
-let SavedUSNRange={}
-
-
+//Variables Declaration
 let mainWindow
 
 let autoNextBot;
 
 let isBotPaused=false;
 
+//Instantiate Window
 function createWindow () {
   // Create the browser window.
     mainWindow= new BrowserWindow({
@@ -56,6 +53,7 @@ function createWindow () {
 
 }
 
+//Menu Template & Handlers
 let menuTemplate = [
 
     {
@@ -123,6 +121,9 @@ let menuTemplate = [
 
                 click: async () => {
                     let count =0
+
+
+
                      autoNextBot= setInterval(()=>{
                         if(count<=61 && !isBotPaused){
                             mainWindow.webContents.send('next', {});
@@ -150,54 +151,7 @@ let menuTemplate = [
 
 ];
 
-function showTokenCaptchaAlert(){
-    let alert = new Alert();
-    let token=null
-    let captcha=null
-
-    mainWindow.webContents
-     .executeJavaScript('window.sessionStorage.getItem("token");', true)
-     .then(result => {
-        console.log(result)
-         token= result
-
-         mainWindow.webContents
-         .executeJavaScript('window.sessionStorage.getItem("captcha");', true)
-         .then(result => {
-             console.log(result)
-             captcha= result
-
-
-             let swalOptions = {
-                title: "Token & Captcha",
-                text: `Session Variables Recorded :\n Token: ${token} \n Captcha: ${captcha}`,
-                icon: "success",
-                showCancelButton: false,
-
-            };
-
-            let promise = alert.fireWithFrame(swalOptions,"Token & Captcha" ,null, true);
-            promise.then((result) => {
-                if (result.value) {
-                    // confirmed
-
-                }
-            })
-
-        });
-
-
-
-    });
-
-
-
-
-
-}
-
-
-
+//Context Menu Template & Handlers
 let contextMenuTemplate = [
      {
         label : "Manual Next",
@@ -245,16 +199,53 @@ let contextMenuTemplate = [
 
 ];
 
-function fetchResult(dataObject,pythonExecutableFileName) {
-    return new Promise((resolve , reject) => {
-        let childPython
-        if(pythonExecutableFileName==="fetch.exe"){
-            childPython = execFile(pythonExecutableFileName, [dataObject.collegeCode, dataObject.year, dataObject.branch, dataObject.startusn, dataObject.lastusn,dataObject.path,String(dataObject.sem)]);
-        }
-        else if(pythonExecutableFileName==="newFetch.exe"){
-            childPython = execFile(pythonExecutableFileName, [dataObject.path]);
+//Show Token & Captcha Alert
+function showTokenCaptchaAlert(){
+    let alert = new Alert();
+    let token=null
+    let captcha=null
 
-        }
+    mainWindow.webContents
+        .executeJavaScript('window.sessionStorage.getItem("token");', true)
+        .then(result => {
+            console.log(result)
+            token= result
+
+            mainWindow.webContents
+                .executeJavaScript('window.sessionStorage.getItem("captcha");', true)
+                .then(result => {
+                    console.log(result)
+                    captcha= result
+
+
+                    let swalOptions = {
+                        title: "Token & Captcha",
+                        text: `Session Variables Recorded :\n Token: ${token} \n Captcha: ${captcha}`,
+                        icon: "success",
+                        showCancelButton: false,
+
+                    };
+
+                    let promise = alert.fireWithFrame(swalOptions,"Token & Captcha" ,null, true);
+                    promise.then((result) => {
+                        if (result.value) {
+                            // confirmed
+
+                        }
+                    })
+
+                });
+
+        });
+}
+
+//Execute Python Script ( Child Process )
+function fetchResult(dataObject) {
+    return new Promise((resolve , reject) => {
+        let childPython = execFile("canaraFetch.exe", [dataObject.path],{
+            cwd: path.join(__dirname, 'python')
+        });
+
         let result='';
         childPython.stdout.on(`data` , (data) => {
             result = data.toString();
@@ -272,37 +263,17 @@ function fetchResult(dataObject,pythonExecutableFileName) {
     })
   };
 
-ipcMain.on("callPython",async (event,data)=>{
-    await fetchResult(data,'fetch.exe')
-    mainWindow.loadFile(path.join(__dirname, '/views/success.html'))
-  })
 
-
-
-
-  ipcMain.on("saveUSNRange",async (event,data)=>{
-    SavedUSNRange=data
-    console.log(SavedUSNRange,"Data on Server")
-    mainWindow.loadURL("https://results.vtu.ac.in/");
-  })
-
-
-
-  ipcMain.on("serverRefreshWait",async (event,data)=>{
-    console.log("Pause Bot")
+ipcMain.on("serverRefreshWait",async (event,data)=>{
     isBotPaused=true
     mainWindow.webContents.send('showWaitTimer', {});
-  })
+})
 
-
-  ipcMain.on("serverRefreshOverResumeBot",async (event,data)=>{
-    console.log("Resume Bot")
+ipcMain.on("serverRefreshOverResumeBot",async (event,data)=>{
     isBotPaused=false
   })
 
-
-
-  ipcMain.on("openDialog",async (event,data)=>{
+ipcMain.on("openDialog",async (event,data)=>{
     dialog.showOpenDialog(mainWindow, {
         properties: [ 'openDirectory']
       }).then(result => {
@@ -324,21 +295,15 @@ ipcMain.on("callPython",async (event,data)=>{
       })
   })
 
-
-//new executable
-ipcMain.on("callNewPython",async (event,data)=>{
-
-    await fetchResult(data,'newFetch.exe')
+ipcMain.on("callPythonExe",async (event,data)=>{
+    await fetchResult(data)
     mainWindow.loadFile(path.join(__dirname, '/views/success.html'))
-    // new Notification({ title: "NOTE:", body: "Excel File Generated , Check file in specified path" }).show()
+    new Notification({ title: "NOTE:", body: "Excel File Generated , Check file in specified path" }).show()
 })
 
-
 ipcMain.on("openVTUResultsPage",(event,data)=>{
-      mainWindow.loadURL("https://results.vtu.ac.in/");
-
-  });
-
+    mainWindow.loadURL("https://results.vtu.ac.in/");
+});
 
 ipcMain.on("sentData",(event,data)=>{
 
@@ -350,21 +315,14 @@ ipcMain.on("sentData",(event,data)=>{
 
  })
 
-
-
-  // context menu on right click
-  ipcMain.on('show-context-menu', (event) => {
-
+ipcMain.on('show-context-menu', (event) => {
     const menu = Menu.buildFromTemplate(contextMenuTemplate)
     menu.popup(BrowserWindow.fromWebContents(event.sender))
   })
 
 
-
 app.whenReady().then(() => {
     let menu = Menu.buildFromTemplate(menuTemplate);
-
-
 
     Menu.setApplicationMenu(menu);
      createWindow()
@@ -373,9 +331,6 @@ app.whenReady().then(() => {
         mainWindow.loadFile(path.join(__dirname, '/views/errorPage.html')).then(()=>{})
 
     });
-
-
-
 
     screenElectron= screen;
 
@@ -386,12 +341,9 @@ app.whenReady().then(() => {
   })
 })
 
-
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 })
-
-
 
 app.on('open-file', function () { console.log(arguments); });
 
