@@ -4,33 +4,30 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../styles/styles.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <title>VTU Results2Excel Tool </title>
+    <script defer src="components/FooterWebComponent.js"></script>
+    <script defer src="components/HeaderWebComponent.js"></script>
+    <link rel="stylesheet" href="../styles/pico.min.css">
 </head>
 <body>
-    <div id="mainNav" class="navBar">
-        <i class="fa-solid fa-graduation-cap"></i>
-        <span class="appName">VTU Results<span class="twoNumTitle">2</span>Excel Tool</span>
-    </div>
-    <div class="vtuNav">
-        <img class="vtuLogoImg" alt="CANARA" src="../assets/cec_logo.png" />
-    </div>
 
-    <div class="MainContent">
+<app-header></app-header>
 
-        <div class="alertMessageSuccess">
+<article style="height: max-content;width:100vw;position: absolute;top:15vh; display: flex;flex-direction: column;justify-content: center">
+
+        <h1 class="alertMessageSuccess">
             <i class="fa-solid fa-circle-check"></i>
 
-            Successfully Generated</div>
+            Successfully Generated</h1>
         <a href="./index.html">
         <button class="subBtn">
             <i class="fa-solid fa-house"></i>
             Back to home</button>
         </a>
-    </div>
-    <footer class="footerTag">&copy All rights Reserved - Designed and Developed by Rohan Nayak & Kedar Pai ( CEC )</footer>
+</article>
+
+<app-footer></app-footer>
 
 </body>
 </html>

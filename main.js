@@ -1,11 +1,13 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow,screen,Menu,Notification } = require('electron')
+const {app, BrowserWindow,screen,Menu,Notification,globalShortcut } = require('electron')
 const path = require('path')
 const Alert = require("electron-alert");
 const { ipcMain } = require('electron')
 const { execFile,spawn } = require('child_process');
 const fs = require("fs");
 const { dialog } = require('electron')
+const prompt = require('electron-prompt');
+
 
 
 //Variables Declaration
@@ -15,12 +17,16 @@ let autoNextBot;
 
 let isBotPaused=false;
 
+const USN_RANGE_LIMIT=150;
+
 //Instantiate Window
 function createWindow () {
   // Create the browser window.
     mainWindow= new BrowserWindow({
         backgroundColor: '#000000',
-        show: false,
+        show: true,
+        resizable: true,
+
 
 
     webPreferences: {
@@ -29,13 +35,15 @@ function createWindow () {
 	  nodeIntegration: true,
 	  enableRemoteModule: true,
         webSecurity: false
-    }
+    },
+    devTools: true
 
 
   })
 
 
 
+    mainWindow.maximize()
 
 
   // and load the index.html of the app.
@@ -50,6 +58,9 @@ function createWindow () {
         event.preventDefault()
         mainWindow.loadURL(url)
     })
+
+
+
 
 }
 
@@ -85,8 +96,6 @@ let menuTemplate = [
                 label: 'Home',
                 click: async () => {
                     mainWindow.loadFile(path.join(__dirname, '/views/index.html'))
-
-
                 }
             },
             {
@@ -120,20 +129,32 @@ let menuTemplate = [
                 label : "Auto Next (New!)",
 
                 click: async () => {
-                    let count =0
 
 
-
-                     autoNextBot= setInterval(()=>{
-                        if(count<=61 && !isBotPaused){
-                            mainWindow.webContents.send('next', {});
-                            count++
-                            if(count===61){
-                                clearInterval(autoNextBot)
+                    prompt({
+                        title: 'Enter Last USN ',
+                        label: 'Last USN 3 digits :',
+                        menuBarVisible: false,
+                        alwaysOnTop: true,
+                        value: '060',
+                        inputAttrs: {
+                            type: 'number',
+                            required: true,
+                            min: 3,
+                        },
+                        type: 'input'
+                    })
+                        .then((r) => {
+                            if(r === null) {
+                                console.log('user cancelled');
+                            } else {
+                                autoNextHandler(r)
                             }
-                        }
+                        })
+                        .catch(console.error);
 
-                    },2000)
+
+
 
                 }
             },
@@ -142,6 +163,15 @@ let menuTemplate = [
                 click: async () => {
                     mainWindow.webContents.send('sendData', {});
 
+                }
+            },
+            {
+                label : "Refresh Screen Freeze(After Wrong Captcha)",
+                click: async () => {
+                    mainWindow.openDevTools()
+                    setTimeout(()=>{
+                        mainWindow.closeDevTools()
+                    },1000)
                 }
             }
 
@@ -173,17 +203,27 @@ let contextMenuTemplate = [
                 label : "Auto Next (New!)",
 
                 click: async () => {
-                    let count =0
-                     autoNextBot= setInterval(()=>{
-                        if(count<=61 && !isBotPaused){
-                            mainWindow.webContents.send('next', {});
-                            count++
-                            if(count===61){
-                                clearInterval(autoNextBot)
+                    prompt({
+                        title: 'Enter Last USN ',
+                        label: 'Last USN 3 digits :',
+                        menuBarVisible: false,
+                        alwaysOnTop: true,
+                        value: '060',
+                        inputAttrs: {
+                            type: 'number',
+                            required: true,
+                            min: 3,
+                        },
+                        type: 'input'
+                    })
+                        .then((r) => {
+                            if(r === null) {
+                                console.log('user cancelled');
+                            } else {
+                                autoNextHandler(r)
                             }
-                        }
-
-                    },2000)
+                        })
+                        .catch(console.error);
 
                 }
             },
@@ -193,8 +233,7 @@ let contextMenuTemplate = [
                     mainWindow.webContents.send('sendData', {});
 
                 }
-            }
-
+            },
 
 
 ];
@@ -239,10 +278,48 @@ function showTokenCaptchaAlert(){
         });
 }
 
+
+//Auto Next Handler
+const autoNextHandler =(r)=>{
+    const userInputLastUSN = Number(r);
+    let count =0
+    if(userInputLastUSN<=USN_RANGE_LIMIT){
+        autoNextBot= setInterval(()=>{
+            if(count<=userInputLastUSN && !isBotPaused){
+                mainWindow.webContents.send('next', {});
+                count++
+                if(count===userInputLastUSN){
+                    clearInterval(autoNextBot)
+                    mainWindow.webContents.send('sendData', {});
+                }
+            }
+
+        },2000)
+    }
+    else{
+        let alert = new Alert();
+
+        let swalOptions = {
+            title: "USN Range Error",
+            text: `Invalid-USN not in range`,
+            icon: "Error",
+            showCancelButton: false,
+
+        };
+
+        let promise = alert.fireWithFrame(swalOptions,"Range Error" ,null, true);
+        promise.then((result) => {
+            if (result.value) {
+            }
+        })
+
+    }
+}
+
 //Execute Python Script ( Child Process )
 function fetchResult(dataObject) {
     return new Promise((resolve , reject) => {
-        let childPython = execFile("canaraFetch.exe", [dataObject.path],{
+        let childPython = execFile("canaraFetch.exe", [dataObject.path,dataObject.dept,dataObject.sem,dataObject.examType,dataObject.creditPoints,dataObject.acdYear],{
             cwd: path.join(__dirname, 'python')
         });
 
@@ -296,9 +373,15 @@ ipcMain.on("openDialog",async (event,data)=>{
   })
 
 ipcMain.on("callPythonExe",async (event,data)=>{
-    await fetchResult(data)
-    mainWindow.loadFile(path.join(__dirname, '/views/success.html'))
-    new Notification({ title: "NOTE:", body: "Excel File Generated , Check file in specified path" }).show()
+    fetchResult(data).then(()=>{
+        mainWindow.loadFile(path.join(__dirname, '/views/success.html'))
+        new Notification({ title: "NOTE:", body: "Excel File Generated , Check file in specified path" }).show()
+
+    })
+        .catch((err)=>{
+            console.log(err)
+            mainWindow.loadFile(path.join(__dirname, '/views/generationFail.html'))
+        })
 })
 
 ipcMain.on("openVTUResultsPage",(event,data)=>{
@@ -309,11 +392,20 @@ ipcMain.on("sentData",(event,data)=>{
 
      let writeData = JSON.stringify(data.data);
 
-     fs.writeFileSync('data.json', writeData);
+     fs.writeFileSync('./python/data.json', writeData);
 
-     mainWindow.loadFile(path.join(__dirname, '/views/generateExcel.html'))
+    mainWindow.loadFile(path.join(__dirname, '/views/generateExcel.html'))
+        .then(()=>{
+            mainWindow.webContents.executeJavaScript(`
+            window.location.reload();
+                        window.sessionStorage.setItem("extractedData", ${JSON.stringify(writeData)});
+                        `)
+        })
 
- })
+
+
+
+})
 
 ipcMain.on('show-context-menu', (event) => {
     const menu = Menu.buildFromTemplate(contextMenuTemplate)
@@ -321,11 +413,24 @@ ipcMain.on('show-context-menu', (event) => {
   })
 
 
+ipcMain.on("showElectronAlert",(event,data)=>{
+    dialog.showErrorBox("Error", data)
+})
+
 app.whenReady().then(() => {
     let menu = Menu.buildFromTemplate(menuTemplate);
 
     Menu.setApplicationMenu(menu);
      createWindow()
+
+
+    //add global shortcut
+    globalShortcut.register('CommandOrControl+R', () => {
+        mainWindow.openDevTools()
+        setTimeout(()=>{
+            mainWindow.closeDevTools()
+        },1000)
+    })
 
     mainWindow.webContents.on('did-fail-load', (_event ) => {
         mainWindow.loadFile(path.join(__dirname, '/views/errorPage.html')).then(()=>{})

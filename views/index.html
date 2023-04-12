@@ -1,57 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-theme="dark">
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-
-    <link href="../styles/styles.css" rel="stylesheet">
     <title>VTU Results2Excel Tool </title>
+    <script defer src="components/FooterWebComponent.js"></script>
+    <script defer src="components/HeaderWebComponent.js"></script>
+      <link rel="stylesheet" href="../styles/pico.min.css">
   </head>
   <body>
-    <div id="mainNav" class="navBar">
-      <i class="fa-solid fa-graduation-cap"></i>
-      <span class="appName">VTU Results<span class="twoNumTitle">2</span>Excel Tool</span>
-      <mark id="version"><i class="fa-solid fa-calendar-check"></i> Version : 1.0.0</mark>
-    </div>
-    <div class="vtuNav">
-      <img class="vtuLogoImg" alt="CANARA" src="../assets/cec_logo.png" />
-    </div>
 
-    <div class="homeMenuOptions">
+  <app-header></app-header>
 
-      <h3 style="color: white">
-        <i class="fa-solid fa-bars"></i>
-        MAIN MENU</h3>
+  <article style="height: 70vh;width:100vw;position: absolute;top:15vh; display: flex;justify-content: center;z-index: -1">
 
-      <h3 style="color: white">Internet Connection status : <strong style="color: white" id='status'></strong></h3>
+      <section style="width: 50%">
+
+          <h4><i class="fa-solid fa-bars"></i> MAIN MENU</h4>
 
 
-      <button id="openVtuResultBtn">
-        <i class="fa-solid fa-building-columns"></i>
-        Extract Results
-        </button>
+          <button
+                  data-tooltip="Extract Result from VTU Website" data-placement="top"
+                  id="openVtuResultBtn">
+              <i class="fa-solid fa-building-columns"></i>
+              Extract Results
+          </button>
 
-      <a href="./excelRead.html">
-        <button class="readExcelBtn">
-          <i class="fa-sharp fa-solid fa-file-excel"></i>
-          Read Data</button>
-      </a>
-
-
-      <a href="./help.html">
-        <button class="readExcelBtn" id="helpBtn">
-
-          <i class="fa-solid fa-question"></i>
-          Help</button>
-      </a>
+          <a href="./excelRead.html">
+              <button data-tooltip="Read Excel Sheet Data">
+                  <i class="fa-sharp fa-solid fa-file-excel"></i>
+                  Read Data</button>
+          </a>
 
 
+          <a href="./help.html">
+              <button
+                      data-tooltip="How to use?"
+                      id="helpBtn">
+                  <i class="fa-solid fa-question"></i>
+                  Help</button>
+          </a>
+          <span>Internet Connection Status : <strong id='status'></strong></span>
 
-    </div>
+      </section>
 
+    </article>
 
-  <footer class="footerTag">&copy All rights Reserved - Designed and Developed by Rohan Nayak & Kedar Pai ( CEC )</footer>
+  <app-footer></app-footer>
 
     <script>
       let openVtuResultBtn=document.getElementById("openVtuResultBtn");
@@ -62,9 +57,13 @@
       const updateOnlineStatus = () => {
         document.getElementById('status').innerHTML = navigator.onLine ? 'Connected ' : 'Not Connected'
         if(navigator.onLine){
+            openVtuResultBtn.disabled=false;
+            openVtuResultBtn.setAttribute("data-tooltip","Extract Result from VTU Website")
           document.getElementById('status').style.color = '#00ff00'
         }
         else {
+            openVtuResultBtn.disabled=true;
+            openVtuResultBtn.setAttribute("data-tooltip","Please Connect to Internet")
           document.getElementById('status').style.color = 'red'
         }
 

@@ -1,41 +1,58 @@
-# electron-quick-start
+This is electron Desktop Application for extracting results from VTU Results Website and generating a report in Excel format. 
 
-**Clone and run for a quick way to see Electron in action.**
+To Run this Project you need to have a few things installed on your machine.
 
-This is a minimal Electron application based on the [Quick Start Guide](https://electronjs.org/docs/latest/tutorial/quick-start) within the Electron documentation.
+1. Node.js
+2. NPM
+3. Python 3.6
+4. Pip
 
-A basic Electron application needs just these files:
+Python requires a few packages to be installed. You can install them by running the following command.
 
-- `package.json` - Points to the app's main file and lists its details and dependencies.
-- `main.js` - Starts the app and creates a browser window to render HTML. This is the app's **main process**.
-- `index.html` - A web page to render. This is the app's **renderer process**.
+1. xlwings ( Excel Library )
+2. chompjs ( JSON Parser ) (Convert JSON to Python Dictionary)
+3. pyinstaller ( To build the python script into executable file )
 
-You can learn more about each of these components within the [Quick Start Guide](https://electronjs.org/docs/latest/tutorial/quick-start).
+Once you have all of these installed, you can run the following commands to get the project up and running.
 
-## To Use
+1. npm install
+2. npm run start
 
-To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+Note : For CSS styling I have used pico.css library. Also, we have used Custom Web Components for the UI.
 
-```bash
-# Clone this repository
-git clone https://github.com/electron/electron-quick-start
-# Go into the repository
-cd electron-quick-start
-# Install dependencies
-npm install
-# Run the app
-npm start
-```
+Web Components 
+The web components are written inside the view/components folder
+(we can simply import these components in the html file and use them, Eg : app-header & app-footer)
+More Web components can be added in the same way for the UI for future development.
 
-Note: If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
 
-## Resources for Learning Electron
+Views Folder:
+The views folder contains the html files for the UI.
+The main html file is index.html which is the main file for the UI.
+The other html files are the pages for the UI.
 
-- [electronjs.org/docs](https://electronjs.org/docs) - all of Electron's documentation
-- [electronjs.org/community#boilerplates](https://electronjs.org/community#boilerplates) - sample starter apps created by the community
-- [electron/electron-quick-start](https://github.com/electron/electron-quick-start) - a very basic starter Electron app
-- [hokein/electron-sample-apps](https://github.com/hokein/electron-sample-apps) - small demo apps for the various Electron APIs
+Each html has a script tag which contains the javascript code for the UI.
+The script is embedded inside the html file for the sake of simplicity & easy maintenance.
 
-## License
+Styles Folder:
+The styles folder contains the css files for the UI.
+We have used pico.css library for the styling of the UI.
+Custom css files can be added & linked to the html for the UI for future development.
 
-[CC0 1.0 (Public Domain)](LICENSE.md)
+
+The main.js file is the entry point for the electron application.
+The main js will call python child process to run the python script.
+The python script has to be build using pyinstaller.
+pyinstaller will executable file for the python script.
+(
+
+
+To Build Python Script using pyinstaller
+Run the following command in the terminal
+npm run buildPythonExecutable
+This will create an executable file & overwrite existing canaraFetch.exe file in the python folder.
+
+
+
+
+

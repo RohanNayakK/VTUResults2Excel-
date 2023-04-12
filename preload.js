@@ -1,12 +1,16 @@
 //Import Modules
 const { ipcRenderer, contextBridge } = require("electron")
 let XLSX = require('xlsx');
+const Alert = require("electron-alert");
 
 
 //Window Event Listeners
 
 //Auto Save Token & Captcha on Form Submit
 window.addEventListener("submit",()=>{
+
+
+
     //if Token Exists!
     if(document.querySelector('[name="Token"]').value){
         let tokenValue = document.querySelector('[name="Token"]').value
@@ -20,13 +24,23 @@ window.addEventListener("submit",()=>{
         window.sessionStorage.setItem("usnNumPart",lnsValue.slice(7))
     }
 
+
 })
+
+
+
+
+
+window.alert = function(message) {
+    ipcRenderer.send("showElectronAlert",message)
+}
+
 
 //Custom Context Menu
 window.addEventListener('contextmenu', (e) => {
     e.preventDefault()
     ipcRenderer.send('show-context-menu')
-  })
+})
 
 
 
@@ -38,6 +52,8 @@ let positiveResponse=true
 let next_USN;
 
 let USN_FIX_PART,USN_NUM_PART;
+
+
 
 
 
@@ -102,9 +118,15 @@ let sendBrowsePath=()=>{
 }
 
 
+let sendAlert=(dataObj)=>{
+    ipcRenderer.send("showElectronAlert",dataObj)
+}
+
+
 //Event Handlers
 
 ipcRenderer.on('sendData', function (evt, data) {
+
     ipcRenderer.send("sentData",{
         data:allStudentData
     })
@@ -231,7 +253,13 @@ ipcRenderer.on('next',  function (evt, data) {
 
         currentStudentData.subjects= extractedMarksData
 
-        allStudentData.push(currentStudentData)
+        //avoid duplicate data
+        if(currentStudentData.studentUSN !== allStudentData[allStudentData.length-1]?.studentUSN){
+            allStudentData.push(currentStudentData)
+        }
+
+
+
 
     }
 
@@ -304,6 +332,8 @@ let indexBridge={
     sendGenerateNewExcel:sendGenerateNewExcel,
     sendServerRefresh : sendServerRefresh,
     sendBrowsePath:sendBrowsePath,
+    sendAlert:sendAlert,
+
 }
 
 

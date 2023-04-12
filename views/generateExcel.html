@@ -2,70 +2,391 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
     <title>VTU Results2Excel Tool </title>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-
-    <link href="../styles/styles.css" rel="stylesheet">
+    <script defer src="components/FooterWebComponent.js"></script>
+    <script defer src="components/HeaderWebComponent.js"></script>
+    <link rel="stylesheet" href="../styles/pico.min.css">
 </head>
 <body>
-<div id="mainNav" class="navBar">
-    <i class="fa-solid fa-graduation-cap"></i>
-    <span class="appName">VTU Results<span class="twoNumTitle">2</span>Excel Tool</span>
-</div>
-<div class="vtuNav">
-    <img class="vtuLogoImg" alt="CANARA" src="../assets/cec_logo.png" />
-</div>
+<app-header></app-header>
 
-<div class="generateExcel">
-<h1>Generate Excel from extracted data</h1>
-    <form id="generateForm">
-        <fieldset id="browsePathFieldSet">
-            <legend>Generate :</legend>
-            <label for="path">Enter the Folder Path :</label>
-            <input id="filePathInput" required placeholder="Enter path " type="text" name="path">
+<article style="height: max-content;width:100vw;position: absolute;top:15vh; display: flex;flex-direction: column;justify-content: center;align-items: center">
+<h1>Generate Excel from Extracted Data :</h1>
+    <a style="width: 300px"
+       class="contrast"
+       data-target="modal-example"
+       onClick="toggleModal(event)"
 
-            <h3>OR</h3>
-            <div onClick="browsePathHandler()" class="browseButton">
-                <i class="fa-solid fa-folder-open"></i>
-                Browse Path
-            </div>
-            <div id="loadingContainer" class="centreWrapper">
-                <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-                <p>Generating please wait...</p>
+    >
+        <i class="fa-regular fa-eye"></i>
+        Preview Extracted Results</a>
+    <form style="width: 60vw" id="generateForm">
+        <fieldset>
+            <label for="filePathInput">Enter File Path :</label>
+            <div style="display: flex;justify-content: space-between;align-items: center">
+                <input style="width: 50%" id="filePathInput" placeholder="Type File Path Here" type="text" name="path">
+                <h5>OR</h5>
+                <button
+                        data-tooltip="Click to Browse Path"
+                        onClick="browsePathHandler()" style="width: 200px">
+                    <i class="fa-solid fa-folder-open"></i>
+                    Browse Path
+                </button>
             </div>
 
 
         </fieldset>
-        <input id="generateSubmitBtn" type="submit" value="Submit">
+
+
+        <fieldset>
+            <label for="dept">Select Department:</label>
+            <select name="dept" id="dept">
+                <option value="INFORMATION  SCIENCE AND ENGINEERING">INFORMATION  SCIENCE AND ENGINEERING</option>
+                <option value="COMPUTER SCIENCE AND ENGINEERING">COMPUTER SCIENCE AND ENGINEERING</option>
+            </select>
+
+            <label for="sem">Select Semester:</label>
+            <select name="sem" id="sem">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+            </select>
+
+            <span>
+                <label>Exam Type :</label>
+
+                <input checked type="radio" id="janFeb" name="examtype" value="JANUARY-FEBRUARY">
+            <label for="janFeb">JAN/FEB</label>
+
+            <input type="radio" id="junJul" name="examtype" value="JUNE-JULY">
+            <label for="junJul">JUN/JUL</label>
+            </span>
+
+        </fieldset>
+
+        <fieldset>
+            <label for="acdyear">Enter Academic Year :</label>
+            <input id="acdyear" type="text" placeholder="2022-2023 (Dont give any space in b/w)"/>
+        </fieldset>
+
+        <fieldset id="creditFieldSet">
+            <legend>Select Subject Credits :</legend>
+            <label id="sub1label" for="sub1">Subject 1</label>
+            <select name="sub1" id="sub1">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+                <option value="12">12</option>
+            </select>
+
+            <label id="sub2label" for="sub2">Subject 2</label>
+            <select name="sub2" id="sub2">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+                <option value="12">12</option>
+            </select>
+
+            <label id="sub3label" for="sub3">Subject 3</label>
+            <select name="sub3" id="sub3">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+                <option value="12">12</option>
+            </select>
+
+            <label id="sub4label" for="sub4">Subject 4</label>
+            <select name="sub4" id="sub4">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+                <option value="12">12</option>
+            </select>
+
+            <label  id="sub5label" for="sub5">Subject 5</label>
+            <select name="sub5" id="sub5">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+                <option value="12">12</option>
+            </select>
+
+            <label  id="sub6label" for="sub6">Subject 6</label>
+            <select name="sub6" id="sub6">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+                <option value="12">12</option>
+            </select>
+
+            <label  id="sub7label" for="sub7">Subject 7</label>
+            <select name="sub7" id="sub7">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+                <option value="12">12</option>
+            </select>
+
+
+            <label  id="sub8label" for="sub8">Subject 8</label>
+            <select name="sub8" id="sub8">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+                <option value="12">12</option>
+            </select>
+
+        </fieldset>
+
+
+        <a style="display: none" id="loader" href="#" aria-busy="true">Generating Excel, Please Wait…</a>
+
+
+        <button  id="generateSubmitBtn">Submit</button>
 
     </form>
-</div>
 
+    <dialog id="modal-example">
+        <article>
+            <a href="#close"
+               aria-label="Close"
+               class="close"
+               data-target="modal-example"
+               onClick="toggleModal(event)">
+            </a>
+            <h3>Extracted Results :</h3>
+            <pre  id="resultsData">[]</pre>
+            <footer>
+                <a href="#cancel"
+                   role="button"
+                   class="secondary"
+                   data-target="modal-example"
+                   onClick="toggleModal(event)">
+                    Cancel
+                </a>
+                <a href="#confirm"
+                   role="button"
+                   data-target="modal-example"
+                   onClick="toggleModal(event)">
+                    Confirm
+                </a>
+            </footer>
+        </article>
+    </dialog>
 
-<footer class="footerTag">&copy All rights Reserved - Designed and Developed by Rohan Nayak & Kedar Pai ( CEC )</footer>
+</article>
+
+<app-footer></app-footer>
 
 <script>
-    let form= document.getElementById("generateForm")
+    let extractedDataJSON= window.sessionStorage.getItem("extractedData")
 
-    let loader = document.getElementById("loadingContainer")
-    form.addEventListener("submit",(e)=>{
-        loader.style.display ="flex"
-        let filePathInp= document.getElementById("filePathInput").value
-        let formDataObj={
-            path: filePathInp
+    const activeSubjectSelects = []
+
+
+    if(String(extractedDataJSON)==="[]"){
+        window.Bridge.sendAlert("Please Extract the Results Data First!")
+        // window.location.href="/"
+    }
+    else{
+        let parsedData= JSON.parse(extractedDataJSON)
+        let count =1
+        parsedData[0].subjects.forEach((subject)=>{
+            let label = document.getElementById(`sub${count}label`)
+            let select = document.getElementById(`sub${count}`)
+            select.name = subject.subjectCode
+            label.innerHTML= subject.subjectName + " (" + subject.subjectCode + ")"
+            activeSubjectSelects.push(`sub${count}`)
+            count++
+        })
+
+        //hide the rest of the labels and select boxes
+        for(let i=count;i<=8;i++){
+            let label = document.getElementById(`sub${i}label`)
+            let select = document.getElementById(`sub${i}`)
+            label.style.display="none"
+            select.style.display="none"
         }
+
+    }
+
+    let form= document.getElementById("generateForm")
+    let loader= document.getElementById("loader")
+
+    let creditPointObj={}
+
+    const submitBtn= document.getElementById("generateSubmitBtn")
+
+    // Config
+    const isOpenClass = "modal-is-open";
+    const openingClass = "modal-is-opening";
+    const closingClass = "modal-is-closing";
+    const animationDuration = 400; // ms
+    let visibleModal = null;
+
+
+
+
+    submitBtn.addEventListener("click",(e)=>{
+        e.preventDefault()
+
+        let extractedData= window.sessionStorage.getItem("extractedData")
+
+
+        if(String(extractedData)==="[]"){
+            window.Bridge.sendAlert("Please Extract the Results Data First!")
+            return
+        }
+        loader.style.display="block"
+        let filePathInp= document.getElementById("filePathInput").value
+        let deptInp= document.getElementById("dept").value
+        let semInp= document.getElementById("sem").value
+        let examTypeInp= document.querySelector('input[name="examtype"]:checked').value
+        let acdYearInp= document.getElementById("acdyear").value
+
+        activeSubjectSelects.forEach((selId)=>{
+            let sel = document.getElementById(selId)
+            let subjectCode = sel.getAttribute("name")
+            creditPointObj[subjectCode] = Number(sel.value)
+
+        })
+
+
+        let formDataObj={
+            path: filePathInp,
+            dept: deptInp,
+            sem: semInp,
+            examType: examTypeInp,
+            creditPoints: JSON.stringify(creditPointObj),
+            acdYear: acdYearInp,
+        }
+
+        console.log(formDataObj)
+
+
+
         window.Bridge.sendGenerateNewExcel(formDataObj)
     })
-
 
     const browsePathHandler=()=>{
         window.Bridge.sendBrowsePath()
 
     }
 
+    const toggleModal = (event) => {
+        event.preventDefault();
+        const modal = document.getElementById(event.currentTarget.getAttribute("data-target"));
+        typeof modal != "undefined" && modal != null && isModalOpen(modal)
+            ? closeModal(modal)
+            : openModal(modal);
+    }
+
+    // Is modal open
+    const isModalOpen = (modal) => {
+        return modal.hasAttribute("open") && modal.getAttribute("open") != "false" ? true : false;
+    };
+
+    // Open modal
+    const openModal = (modal) => {
+        if (isScrollbarVisible()) {
+            document.documentElement.style.setProperty("--scrollbar-width", `${getScrollbarWidth()}px`);
+        }
+        document.documentElement.classList.add(isOpenClass, openingClass);
+        setTimeout(() => {
+            visibleModal = modal;
+            document.documentElement.classList.remove(openingClass);
+        }, animationDuration);
+        modal.setAttribute("open", true);
+
+
+        let extractedData= window.sessionStorage.getItem("extractedData")
+
+        if(extractedData){
+            let parsedData= JSON.parse(extractedData)
+            let resultsData= document.getElementById("resultsData")
+            resultsData.innerHTML=JSON.stringify(parsedData,null,2)
+        }
+
+
+
+
+    };
+
+    // Close modal
+    const closeModal = (modal) => {
+        visibleModal = null;
+        document.documentElement.classList.add(closingClass);
+        setTimeout(() => {
+            document.documentElement.classList.remove(closingClass, isOpenClass);
+            document.documentElement.style.removeProperty("--scrollbar-width");
+            modal.removeAttribute("open");
+        }, animationDuration);
+    };
+
+    const getScrollbarWidth = () => {
+        // Creating invisible container
+        const outer = document.createElement("div");
+        outer.style.visibility = "hidden";
+        outer.style.overflow = "scroll"; // forcing scrollbar to appear
+        outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
+        document.body.appendChild(outer);
+
+        // Creating inner element and placing it in the container
+        const inner = document.createElement("div");
+        outer.appendChild(inner);
+
+        // Calculating difference between container's full width and the child width
+        const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+
+        // Removing temporary elements from the DOM
+        outer.parentNode.removeChild(outer);
+
+        return scrollbarWidth;
+    };
+    // Is scrollbar visible
+    const isScrollbarVisible = () => {
+        return document.body.scrollHeight > screen.height;
+    };
+
 </script>
+
 </body>
 </html>
