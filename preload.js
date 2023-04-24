@@ -166,11 +166,13 @@ ipcRenderer.on('showWaitTimer',  function (evt, data) {
 
         let overlayContainer=document.createElement("div")
         overlayContainer.setAttribute("id","overlay")
-        overlayContainer.setAttribute("style","position: fixed; display:flex;top:0;left:0;height:100%;width:100%;background-color:rgba(0,0,0,0.7);z-index:1000;color:white;font-size:2rem;align-items:center;justify-content:center;textAllign:center")
+        overlayContainer.setAttribute("style","position: fixed; display:flex;flex-direction:column;top:0;left:0;height:100%;width:100%;background-color:rgba(0,0,0,0.7);z-index:1000;color:white;font-size:2rem;align-items:center;justify-content:center;textAllign:center")
         overlayContainer.innerHTML=
         `
         <h1>Server Refreshing...</h1>
         <h1>Please Wait for 30 secs...</h1>
+        <p>It will auto resume after the stipulated time, dont exit or refresh</p>
+
         `
         document.body.append(overlayContainer)
 
@@ -180,7 +182,6 @@ ipcRenderer.on('showWaitTimer',  function (evt, data) {
             `
             <h1>Server Refreshing...</h1>
             <h1>Please Wait for ${time} secs...</h1>
-            <br>
             <p>It will auto resume after the stipulated time, dont exit or refresh</p>
             `
             time -= 1

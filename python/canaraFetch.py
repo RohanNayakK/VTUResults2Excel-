@@ -23,10 +23,10 @@ totalCreditsSum = sys.argv[7]
 # dept = "INFORMATION SCIENCE"
 # sem = "7"
 # examType = "JUNE-JULY"
-# js_obj = '{18CS71: 4,18CS72: 4,18CS734: 3,18CSL76: 2,18ME751: 3, 18CS745: 3}'
+# js_obj = '{18CS55: 3,18CS54: 3,18CSL57: 2,18CS52: 4,18CS53: 4, 18CSL58: 2,18CS51:3,18CS56:3 }'
 # credit = chompjs.parse_js_object(js_obj)
 # acdYear = "2018-2019"
-# totalCreditsSum = 19
+# totalCreditsSum = 24
 
 # # test data for debugging (Fail)
 # filePath = "E:"
@@ -63,7 +63,7 @@ lastFourCellsAddress = [
 
 defaultNumOfSubjects = 8
 
-cellAddressJson = [["D", "E", "F", "G"],  ["J", "K", "L",  "N"], ["P", "Q", "R", "S"], ["V", "W", "X", "Y"], [
+cellAddressJson = [["D", "E", "F", "G"],  ["J", "K", "L",  "M"], ["P", "Q", "R", "S"], ["V", "W", "X", "Y"], [
     "AB", "AC", "AD", "AE"], ["AH", "AI", "AJ", "AK"], ["AN", "AO", "AP", "AQ"], ["AT", "AU", "AV", "AW"]]
 
 
