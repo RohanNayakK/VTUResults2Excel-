@@ -282,11 +282,14 @@
         let examTypeInp= document.querySelector('input[name="examtype"]:checked').value
         let acdYearInp= document.getElementById("acdyear").value
 
+
+        let totalCredits = 0
+
         activeSubjectSelects.forEach((selId)=>{
             let sel = document.getElementById(selId)
             let subjectCode = sel.getAttribute("name")
             creditPointObj[subjectCode] = Number(sel.value)
-
+            totalCredits += Number(sel.value)
         })
 
 
@@ -296,6 +299,7 @@
             sem: semInp,
             examType: examTypeInp,
             creditPoints: JSON.stringify(creditPointObj),
+            totalCredits: totalCredits,
             acdYear: acdYearInp,
         }
 

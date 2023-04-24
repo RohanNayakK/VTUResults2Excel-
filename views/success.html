@@ -9,25 +9,46 @@
     <script defer src="components/FooterWebComponent.js"></script>
     <script defer src="components/HeaderWebComponent.js"></script>
     <link rel="stylesheet" href="../styles/pico.min.css">
+    <link rel="stylesheet" href="../styles/global.css">
 </head>
 <body>
 
 <app-header></app-header>
 
-<article style="height: max-content;width:100vw;position: absolute;top:15vh; display: flex;flex-direction: column;justify-content: center">
+<article style="height: max-content;width:100vw;position: absolute;top:15vh; display: flex;flex-direction: column;justify-content: center;align-items: center">
 
         <h1 class="alertMessageSuccess">
             <i class="fa-solid fa-circle-check"></i>
 
             Successfully Generated</h1>
+
+    <section style="width: 50vw">
+        <button
+                class="btn-success"
+                data-tooltip="Click to open the generated file"
+                onclick="showFileHandler()">
+            <i class="fa fa-file" aria-hidden="true"></i>
+            Open generated file
+        </button>
+
+
         <a href="./index.html">
-        <button class="subBtn">
-            <i class="fa-solid fa-house"></i>
-            Back to home</button>
+            <button class="subBtn">
+                <i class="fa-solid fa-house"></i>
+                Back to home</button>
         </a>
+    </section>
+
+
 </article>
 
 <app-footer></app-footer>
+<script>
+    function showFileHandler(){
+        window.Bridge.sendShowFile();
+    }
+</script>
+
 
 </body>
 </html>

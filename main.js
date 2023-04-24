@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow,screen,Menu,Notification,globalShortcut } = require('electron')
+const {app, BrowserWindow,screen,Menu,Notification,globalShortcut,shell } = require('electron')
 const path = require('path')
 const Alert = require("electron-alert");
 const { ipcMain } = require('electron')
@@ -18,6 +18,11 @@ let autoNextBot;
 let isBotPaused=false;
 
 const USN_RANGE_LIMIT=150;
+
+//count for auto next
+let count =0
+
+let userSelectedFilePath = ""
 
 //Instantiate Window
 function createWindow () {
@@ -282,7 +287,7 @@ function showTokenCaptchaAlert(){
 //Auto Next Handler
 const autoNextHandler =(r)=>{
     const userInputLastUSN = Number(r);
-    let count =0
+
     if(userInputLastUSN<=USN_RANGE_LIMIT){
         autoNextBot= setInterval(()=>{
             if(count<=userInputLastUSN && !isBotPaused){
@@ -319,7 +324,8 @@ const autoNextHandler =(r)=>{
 //Execute Python Script ( Child Process )
 function fetchResult(dataObject) {
     return new Promise((resolve , reject) => {
-        let childPython = execFile("canaraFetch.exe", [dataObject.path,dataObject.dept,dataObject.sem,dataObject.examType,dataObject.creditPoints,dataObject.acdYear],{
+        userSelectedFilePath = dataObject.path
+        let childPython = execFile("canaraFetch.exe", [dataObject.path,dataObject.dept,dataObject.sem,dataObject.examType,dataObject.creditPoints,dataObject.acdYear,dataObject.totalCredits],{
             cwd: path.join(__dirname, 'python')
         });
 
@@ -334,6 +340,7 @@ function fetchResult(dataObject) {
         });
 
         childPython.on('error' , function(err){
+            userSelectedFilePath = ""
             reject(err)
         });
 
@@ -343,6 +350,8 @@ function fetchResult(dataObject) {
 
 ipcMain.on("serverRefreshWait",async (event,data)=>{
     isBotPaused=true
+    //decrement count on server refresh
+    count--;
     mainWindow.webContents.send('showWaitTimer', {});
 })
 
@@ -412,9 +421,18 @@ ipcMain.on('show-context-menu', (event) => {
     menu.popup(BrowserWindow.fromWebContents(event.sender))
   })
 
-
 ipcMain.on("showElectronAlert",(event,data)=>{
     dialog.showErrorBox("Error", data)
+})
+
+ipcMain.on("showFile",(event,data)=>{
+    if(userSelectedFilePath===""){
+        dialog.showErrorBox("Error", "No File Found or Generated")
+    }
+    else {
+        shell.openPath(userSelectedFilePath+"/canaraFormat.xlsx")
+    }
+
 })
 
 app.whenReady().then(() => {
@@ -433,6 +451,8 @@ app.whenReady().then(() => {
     })
 
     mainWindow.webContents.on('did-fail-load', (_event ) => {
+        console.log(_event)
+
         mainWindow.loadFile(path.join(__dirname, '/views/errorPage.html')).then(()=>{})
 
     });

@@ -1,0 +1,19 @@
+.btn-success{
+    background: lightgreen;
+    border: mediumspringgreen;
+    color: darkgreen;
+}
+
+.btn-help{
+    background: seagreen;
+    border: seagreen;
+    color: black;
+}
+
+.btn-error{
+    background: indianred;
+}
+
+.btn-warning{
+    background: palegoldenrod;
+}

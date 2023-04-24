@@ -90,6 +90,8 @@ let sendGenerateNewExcel=(dataObj)=>{
     ipcRenderer.send("callPythonExe",dataObj)
 }
 
+
+
 let sendReadExcel=(data)=>{
     const HTMLOUT = document.getElementById('htmlout');
     HTMLOUT.innerHTML = "";
@@ -120,6 +122,10 @@ let sendBrowsePath=()=>{
 
 let sendAlert=(dataObj)=>{
     ipcRenderer.send("showElectronAlert",dataObj)
+}
+
+let sendShowFile=(dataObj)=>{
+    ipcRenderer.send("showFile",dataObj)
 }
 
 
@@ -174,7 +180,8 @@ ipcRenderer.on('showWaitTimer',  function (evt, data) {
             `
             <h1>Server Refreshing...</h1>
             <h1>Please Wait for ${time} secs...</h1>
-            
+            <br>
+            <p>It will auto resume after the stipulated time, dont exit or refresh</p>
             `
             time -= 1
             if(time===0){
@@ -295,12 +302,8 @@ ipcRenderer.on('next',  function (evt, data) {
 
                 if(unqoutedResponseString==="University Seat Number is not available or Invalid..!"){
                     // alert("Invalid/Non Existent USN, Continue Next Or Exit ")
-                    console.log("Invalid/Non Existent USN, Continue Next Or Exit ")
-
                     //Set True to skip and continue to the next USN
                     positiveResponse=true
-
-
                 }
                 else {
                     //alert(unqoutedResponseString)
@@ -333,7 +336,7 @@ let indexBridge={
     sendServerRefresh : sendServerRefresh,
     sendBrowsePath:sendBrowsePath,
     sendAlert:sendAlert,
-
+    sendShowFile:sendShowFile,
 }
 
 

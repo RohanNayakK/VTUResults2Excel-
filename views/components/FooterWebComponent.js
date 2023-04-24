@@ -12,8 +12,8 @@ height: 5vh;
 }
 </style>
 
-<footer id="footer-section" >&copy All Rights Reserved - CEC - Designed & Developed by PO4(2023)- 
-<a target="_blank" href="https://www.canaraengineering.in/is">ISE Department CEC</a>
+<footer id="footer-section" >&copy All Rights Reserved - CEC - Designed & Developed by PO4(2023)- I.S.E Dept
+<a href="../views/credits.html">Credits</a>
 <span id="footerLinks">
 </span>
 </footer>
