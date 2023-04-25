@@ -21,20 +21,20 @@ totalCreditsSum = sys.argv[7]
 # test data for debugging (Success)
 # filePath = "E:"
 # dept = "INFORMATION SCIENCE"
-# sem = "7"
+# sem = "5"
 # examType = "JUNE-JULY"
 # js_obj = '{18CS55: 3,18CS54: 3,18CSL57: 2,18CS52: 4,18CS53: 4, 18CSL58: 2,18CS51:3,18CS56:3 }'
 # credit = chompjs.parse_js_object(js_obj)
 # acdYear = "2018-2019"
 # totalCreditsSum = 24
 
-# # test data for debugging (Fail)
+
 # filePath = "E:"
 # dept = "INFORMATION SCIENCE"
 # sem = "7"
 # examType = "JUNE-JULY"
-# added non existing subject code to test error handling
-# js_obj = '{18CS71: 4,18CS72: 4,18CS73: 4,18CSL76: 3,18ME751: 3, 18CS745: 1}'
+# # added non existing subject code to test error handling
+# js_obj = '{18CS71: 4,18CS72: 4,18CSL76: 2,18ME751: 3, 18CS745: 3,18CS734:3}'
 # credit = chompjs.parse_js_object(js_obj)
 # acdYear = "2018-2019"
 # totalCreditsSum = 19
@@ -236,6 +236,16 @@ try:
                 sht.range(cellAddressJson[subIndex][3]+str(
                     studentDataStartingRowIndex+count)).value = "F"
 
+            # Check if student is absent in any subject
+            if(subject["result"]=="A"):
+                sht.range(cellAddressJson[subIndex][3]+str(studentDataStartingRowIndex+count)).value = "A"
+
+
+            # Check if student result is withheld in any subject
+            if(subject["result"]=="W" or subject["result"]=="X"):
+                sht.range(cellAddressJson[subIndex][3]+str(studentDataStartingRowIndex+count)).value = "W"
+
+
             # Credit
 
             # Find subject code in credit list
@@ -244,7 +254,7 @@ try:
             gradePointValue = (sht.range(
                 gradePointPairForCredit[subIndex]+str(studentDataStartingRowIndex+count)).value)
             sht.range(creditCellAddress[subIndex] + str(
-                studentDataStartingRowIndex+count)).value = (gradePointValue * creditPoint)
+                studentDataStartingRowIndex+count)).value = (int(gradePointValue) * int(creditPoint))
             totalCreditsPoints += (int(gradePointValue) * int(creditPoint))
 
         # Total Grade Points ( Sum of all subject credits)
@@ -263,8 +273,7 @@ try:
                   str((studentDataStartingRowIndex+count))).value = percentageValue
 
         # Class
-        sht.range(classCellAddress + str((studentDataStartingRowIndex+count))
-                  ).value = getGradeClass(percentageValue)
+        sht.range(classCellAddress + str((studentDataStartingRowIndex+count))).value = getGradeClass(percentageValue)
 
         # Check if failed in any subject then set class to fail manually
         if failedInAnySubject:
@@ -273,6 +282,14 @@ try:
 
         lastCountRow = studentDataStartingRowIndex+count
         count += 1
+
+    # write total number of subjects in template in A8 (hidden cell)
+    sht.range("A8").value = numOfSubjects
+
+    # write total number of students in template in A9 (hidden cell)
+    sht.range("A9").value = count
+
+
 
     # delete rows from lastCountRow to 150 (remove additional formula rows Grade Point and Grade)
     sht.range("A"+str(lastCountRow+1) +

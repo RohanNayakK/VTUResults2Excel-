@@ -9,6 +9,7 @@
     <script defer src="components/FooterWebComponent.js"></script>
     <script defer src="components/HeaderWebComponent.js"></script>
     <link rel="stylesheet" href="../styles/pico.min.css">
+    <link rel="stylesheet" href="../styles/global.css">
 
 </head>
 <body>
@@ -19,7 +20,7 @@
 
     <section>
             <fieldset>
-                <legend>Read Excel :</legend>
+                <legend>Data & Analysis :</legend>
                 <label for="readIn">Upload Generated Excel File :</label>
                 <input type="file"  name="xlfile" id="readIn" />
                 <a href="./index.html">
@@ -29,7 +30,16 @@
                     </a>
             </fieldset>
 
-        <div id="htmlout"></div>
+        <details>
+            <summary>Analysis</summary>
+            Some analysis of the excel file will be shown here
+        </details>
+
+        <details>
+            <summary>Excel Data</summary>
+            <div id="htmlout"></div>
+        </details>
+
     </section>
 
 </article>
@@ -45,6 +55,7 @@
                 let data = e.target.result;
                 data = new Uint8Array(data);
                 window.Bridge.sendReadExcel(data)
+
 
             };
             reader.readAsArrayBuffer(f);
