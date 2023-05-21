@@ -17,6 +17,8 @@ let autoNextBot;
 
 let isBotPaused=false;
 
+let userInputFileName="generated-result.xlsx"
+
 const USN_RANGE_LIMIT=150;
 
 //count for auto next
@@ -28,8 +30,8 @@ let userSelectedFilePath = ""
 function createWindow () {
   // Create the browser window.
     mainWindow= new BrowserWindow({
-        backgroundColor: '#000000',
-        show: true,
+        backgroundColor: '#141e26',
+        show: false,
         resizable: true,
 
 
@@ -55,10 +57,11 @@ function createWindow () {
   mainWindow.loadFile(path.join(__dirname, './views/index.html'))
 
   mainWindow.maximize()
-    mainWindow.once('ready-to-show', () => {
 
+    mainWindow.once('ready-to-show', () => {
         mainWindow.show()
     })
+
     mainWindow.webContents.on('new-window', (event, url) => {
         event.preventDefault()
         mainWindow.loadURL(url)
@@ -131,7 +134,7 @@ let menuTemplate = [
             },
 
             {
-                label : "Auto Next (New!)",
+                label : "Auto Next",
 
                 click: async () => {
 
@@ -164,7 +167,7 @@ let menuTemplate = [
                 }
             },
             {
-                label : "Send Data",
+                label : "Generate Excel",
                 click: async () => {
                     mainWindow.webContents.send('sendData', {});
 
@@ -194,18 +197,8 @@ let contextMenuTemplate = [
             mainWindow.webContents.send('next', {});
         }
     },
-        {
-                label : "Get Token&Captcha",
-                click: async () => {
-                    mainWindow.webContents.send('getValue',{});
-                    showTokenCaptchaAlert()
-                }
-            },
-
-
-
             {
-                label : "Auto Next (New!)",
+                label : "Auto Next",
 
                 click: async () => {
                     prompt({
@@ -233,7 +226,7 @@ let contextMenuTemplate = [
                 }
             },
             {
-                label : "Send Data",
+                label : "Generate Excel",
                 click: async () => {
                     mainWindow.webContents.send('sendData', {});
 
@@ -325,13 +318,19 @@ const autoNextHandler =(r)=>{
 function fetchResult(dataObject) {
     return new Promise((resolve , reject) => {
         userSelectedFilePath = dataObject.path
-        let childPython = execFile("canaraFetch.exe", [dataObject.path,dataObject.dept,dataObject.sem,dataObject.examType,dataObject.creditPoints,dataObject.acdYear,dataObject.totalCredits],{
+        userInputFileName = dataObject.filename
+        let childPython = execFile("canaraFetch.exe", [dataObject.path,dataObject.dept,dataObject.sem,dataObject.examType,dataObject.creditPoints,dataObject.acdYear,dataObject.totalCredits,dataObject.scheme,dataObject.filename],{
             cwd: path.join(__dirname, 'python')
         });
 
         let result='';
         childPython.stdout.on(`data` , (data) => {
             result = data.toString();
+            if(result.includes("Error")){
+                userSelectedFilePath = ""
+                userInputFileName = ""
+                reject(result)
+            }
             console.log(result)
         });
 
@@ -341,6 +340,7 @@ function fetchResult(dataObject) {
 
         childPython.on('error' , function(err){
             userSelectedFilePath = ""
+            userInputFileName = ""
             reject(err)
         });
 
@@ -430,7 +430,7 @@ ipcMain.on("showFile",(event,data)=>{
         dialog.showErrorBox("Error", "No File Found or Generated")
     }
     else {
-        shell.openPath(userSelectedFilePath+"/canaraFormat.xlsx")
+        shell.openPath(userSelectedFilePath+userInputFileName)
     }
 
 })
@@ -439,7 +439,8 @@ app.whenReady().then(() => {
     let menu = Menu.buildFromTemplate(menuTemplate);
 
     Menu.setApplicationMenu(menu);
-     createWindow()
+
+    createWindow()
 
 
     //add global shortcut

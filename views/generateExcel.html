@@ -38,6 +38,11 @@
 
         </fieldset>
 
+        <fieldset>
+            <label for="fileName">Enter Filename :</label>
+            <input id="fileName" type="text" placeholder="Enter filename to save excel file" name="fileName"/>
+        </fieldset>
+
 
         <fieldset>
             <label for="dept">Select Department:</label>
@@ -73,6 +78,15 @@
         <fieldset>
             <label for="acdyear">Enter Academic Year :</label>
             <input id="acdyear" type="text" placeholder="2022-2023 (Dont give any space in b/w)"/>
+        </fieldset>
+
+        <fieldset>
+            <legend>Select Scheme :</legend>
+            <label for="scheme">Scheme( Grade System )</label>
+            <select name="scheme" id="scheme">
+                <option value="2018">2018 ( S,A,B,C,D,E,F )</option>
+                <option value="2021">2021 ( O,A+,A,B+,B,C,P,F )</option>
+            </select>
         </fieldset>
 
         <fieldset id="creditFieldSet">
@@ -255,6 +269,8 @@
 
     const submitBtn= document.getElementById("generateSubmitBtn")
 
+
+
     // Config
     const isOpenClass = "modal-is-open";
     const openingClass = "modal-is-opening";
@@ -292,6 +308,13 @@
             totalCredits += Number(sel.value)
         })
 
+        const scheme = document.getElementById("scheme").value
+
+        let filename = document.getElementById("fileName").value + '.xlsx'
+
+        if(filename===""){
+            filename = "generated-result.xlsx"
+        }
 
         let formDataObj={
             path: filePathInp,
@@ -301,10 +324,9 @@
             creditPoints: JSON.stringify(creditPointObj),
             totalCredits: totalCredits,
             acdYear: acdYearInp,
+            scheme: scheme,
+            filename: filename
         }
-
-        console.log(formDataObj)
-
 
 
         window.Bridge.sendGenerateNewExcel(formDataObj)

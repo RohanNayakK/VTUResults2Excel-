@@ -213,7 +213,7 @@ ipcRenderer.on('next',  function (evt, data) {
 
     const readMarksData=()=>{
         let tempArr=[]
-        for (let k=1;k<marksData.length-1;k++){
+        for (let k=1;k<=marksData.length-1;k++){
             sub.subjectCode = marksData[k].children[0].innerText;
             sub.subjectName = marksData[k].children[1].innerText;
             sub.iaMarks = marksData[k].children[2].innerText;

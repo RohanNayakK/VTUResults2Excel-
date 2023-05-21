@@ -6,7 +6,7 @@ import sys
 import chompjs
 
 
-# Get sys args
+#Get sys args
 filePath = sys.argv[1]
 dept = sys.argv[2]
 sem = sys.argv[3]
@@ -14,38 +14,41 @@ examType = sys.argv[4]
 credit = chompjs.parse_js_object(sys.argv[5])
 acdYear = sys.argv[6]
 totalCreditsSum = sys.argv[7]
+scheme = sys.argv[8]
+filename = sys.argv[9]
 
 
-#########START: This is for testing purpose only##########
 
-# test data for debugging (Success)
-# filePath = "E:"
-# dept = "INFORMATION SCIENCE"
-# sem = "5"
-# examType = "JUNE-JULY"
-# js_obj = '{18CS55: 3,18CS54: 3,18CSL57: 2,18CS52: 4,18CS53: 4, 18CSL58: 2,18CS51:3,18CS56:3 }'
-# credit = chompjs.parse_js_object(js_obj)
-# acdYear = "2018-2019"
-# totalCreditsSum = 24
+#Testing purposes
 
+# filePath = "E:/"
+# dept = "INFORMATION SCIENCE AND ENGINEERING"
+# sem = "3"
+# examType = "JANUARY-FEBRUARY"
+# json_obj = "{21CS33: 4, 21CS34: 3, 21CS32: 4, 21CSL381: 1, 21CSL35: 1, 21KSK37: 1, 21SCR36: 1, 21MAT31: 3}"
+# credit = chompjs.parse_js_object(json_obj)
+# acdYear = "2020-2021"
+# totalCreditsSum = 18
+# scheme = "2021"
+# filename = "3ISEJANUARY-FEBRUARY2020-2021.xlsx"
 
-# filePath = "E:"
-# dept = "INFORMATION SCIENCE"
-# sem = "7"
-# examType = "JUNE-JULY"
-# # added non existing subject code to test error handling
-# js_obj = '{18CS71: 4,18CS72: 4,18CSL76: 2,18ME751: 3, 18CS745: 3,18CS734:3}'
-# credit = chompjs.parse_js_object(js_obj)
-# acdYear = "2018-2019"
-# totalCreditsSum = 19
-
-
-#########END :This is for testing purpose only##########
 
 # Constants
-extractedJSONPath = "data.json"
+extractedJSONPath = "./data.json"
 
-templatePath = "./canaraTemplateFormat.xlsx"
+
+kskFlag = False
+kbkFlag = False
+
+# Select template based on scheme
+templatePath = ""
+
+if(scheme == "2018"):
+    templatePath = "./2018SchemeTemplate.xlsx"
+elif(scheme == "2021"):
+    templatePath = "./2021SchemeTemplate.xlsx"
+
+# Cell Address Arrays
 
 subCellAddress = ["D:I", "J:O", "P:U", "V:AA",
                   "AB:AG", "AH:AM", "AN:AS", "AT:AY"]
@@ -167,7 +170,13 @@ try:
     sortedSubjectsList = []
     subjectCodeList = []
 
+
     for subject in data[0]["subjects"]:
+        if("KSK" in subject["subjectCode"]):
+            kskFlag = True
+        if("KBK" in subject["subjectCode"]):
+            kbkFlag = True
+
         sortedSubjectsList.append(
             subject["subjectCode"] + " - " + subject["subjectName"])
         subjectCodeList.append(subject["subjectCode"])
@@ -176,6 +185,9 @@ try:
     acdYearFirst = acdYear.split("-")[0]
 
     sht.range("A5").value = "DEPARTMENT OF "+dept
+
+    sht.range("K156").value = dept
+
     sht.range("A7").value = "Results - " + examType + " " + \
         acdYearFirst + " - " + sem + "- SEMESTER - AY- " + acdYear
 
@@ -209,10 +221,27 @@ try:
         # Initialize totalCreditsPoints to 0
         totalCreditsPoints = 0
 
+
+
         for(subject) in student["subjects"]:
             # Find subject code in subject code list
+            global subCode
 
             subCode = subject["subjectCode"]
+
+
+            #3rd sem Kannada special case
+            #( Samkrutha Kannada and Balake Kannada )
+            #( Kind of a hack , find a better way to do this)
+            if( ("KBK" in str(subCode) ) and kskFlag ):
+                #replace KBK with KSK
+                subCode = subCode.replace("KBK","KSK")
+            elif( ("KSK" in str(subCode) ) and kbkFlag ):
+                #replace KSK with KBK
+                subCode = subCode.replace("KSK","KBK")
+
+
+
             subIndex = subjectCodeList.index(subCode)
             cellAddress = subCellAddress[subIndex].split(":")[0]
             cellAddress = cellAddress+str((studentDataStartingRowIndex+count))
@@ -283,11 +312,11 @@ try:
         lastCountRow = studentDataStartingRowIndex+count
         count += 1
 
-    # write total number of subjects in template in A8 (hidden cell)
-    sht.range("A8").value = numOfSubjects
-
-    # write total number of students in template in A9 (hidden cell)
-    sht.range("A9").value = count
+#     # write total number of subjects in template in A8 (hidden cell)
+#     sht.range("A8").value = numOfSubjects
+#
+#     # write total number of students in template in A9 (hidden cell)
+#     sht.range("A9").value = count
 
 
 
@@ -302,7 +331,7 @@ try:
     sht.name = str(sem)+" Sem " + deptAccro + " Results"
 
     # Save file
-    wb.save(filePath+"/canaraFormat.xlsx")
+    wb.save(filePath+filename)
 
     print("Success")
 

@@ -1,0 +1,282 @@
+[
+    {
+        "studentName": " ADITYA MANJUNATH KAMAT",
+        "studentUSN": " 4CB21IS001",
+        "subjects": [
+            {
+                "subjectCode": "21CS33",
+                "subjectName": "ANALOG AND DIGITAL ELECTRONICS",
+                "iaMarks": "40",
+                "eaMarks": "18",
+                "totalMarks": "58",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21CS34",
+                "subjectName": "COMPUTER ORGANIZATION AND ARCHITECTURE",
+                "iaMarks": "33",
+                "eaMarks": "18",
+                "totalMarks": "51",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21CS32",
+                "subjectName": "DATA STRUCTURES AND APPLICATIONS",
+                "iaMarks": "32",
+                "eaMarks": "18",
+                "totalMarks": "50",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21CSL381",
+                "subjectName": "MASTERING OFFICE",
+                "iaMarks": "47",
+                "eaMarks": "44",
+                "totalMarks": "91",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21CSL35",
+                "subjectName": "OBJECT ORIENTED PROGRAMMING WITH JAVA LABORATORY",
+                "iaMarks": "43",
+                "eaMarks": "38",
+                "totalMarks": "81",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21KSK37",
+                "subjectName": "SAMSKRUTHIKA KANNADA",
+                "iaMarks": "38",
+                "eaMarks": "21",
+                "totalMarks": "59",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21SCR36",
+                "subjectName": "SOCIAL CONNECT AND RESPONSIBILITY",
+                "iaMarks": "35",
+                "eaMarks": "43",
+                "totalMarks": "78",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21MAT31",
+                "subjectName": "TRANSFORM CALCULUS, FOURIER SERIES AND NUMERICAL TECHNIQUES",
+                "iaMarks": "28",
+                "eaMarks": "18",
+                "totalMarks": "46",
+                "result": "P"
+            }
+        ]
+    },
+    {
+        "studentName": " AMULYA JOIS",
+        "studentUSN": " 4CB21IS002",
+        "subjects": [
+            {
+                "subjectCode": "21CS33",
+                "subjectName": "ANALOG AND DIGITAL ELECTRONICS",
+                "iaMarks": "48",
+                "eaMarks": "33",
+                "totalMarks": "81",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21KBK37",
+                "subjectName": "BALAKE KANNADA",
+                "iaMarks": "49",
+                "eaMarks": "49",
+                "totalMarks": "98",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21CS34",
+                "subjectName": "COMPUTER ORGANIZATION AND ARCHITECTURE",
+                "iaMarks": "50",
+                "eaMarks": "41",
+                "totalMarks": "91",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21CS32",
+                "subjectName": "DATA STRUCTURES AND APPLICATIONS",
+                "iaMarks": "49",
+                "eaMarks": "34",
+                "totalMarks": "83",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21CSL381",
+                "subjectName": "MASTERING OFFICE",
+                "iaMarks": "50",
+                "eaMarks": "50",
+                "totalMarks": "100",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21CSL35",
+                "subjectName": "OBJECT ORIENTED PROGRAMMING WITH JAVA LABORATORY",
+                "iaMarks": "48",
+                "eaMarks": "49",
+                "totalMarks": "97",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21SCR36",
+                "subjectName": "SOCIAL CONNECT AND RESPONSIBILITY",
+                "iaMarks": "50",
+                "eaMarks": "50",
+                "totalMarks": "100",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21MAT31",
+                "subjectName": "TRANSFORM CALCULUS, FOURIER SERIES AND NUMERICAL TECHNIQUES",
+                "iaMarks": "39",
+                "eaMarks": "34",
+                "totalMarks": "73",
+                "result": "P"
+            }
+        ]
+    },
+    {
+        "studentName": " ANIKETH K",
+        "studentUSN": " 4CB21IS003",
+        "subjects": [
+            {
+                "subjectCode": "21CS33",
+                "subjectName": "ANALOG AND DIGITAL ELECTRONICS",
+                "iaMarks": "44",
+                "eaMarks": "41",
+                "totalMarks": "85",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21CS34",
+                "subjectName": "COMPUTER ORGANIZATION AND ARCHITECTURE",
+                "iaMarks": "46",
+                "eaMarks": "32",
+                "totalMarks": "78",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21CS32",
+                "subjectName": "DATA STRUCTURES AND APPLICATIONS",
+                "iaMarks": "43",
+                "eaMarks": "27",
+                "totalMarks": "70",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21CSL381",
+                "subjectName": "MASTERING OFFICE",
+                "iaMarks": "50",
+                "eaMarks": "45",
+                "totalMarks": "95",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21CSL35",
+                "subjectName": "OBJECT ORIENTED PROGRAMMING WITH JAVA LABORATORY",
+                "iaMarks": "49",
+                "eaMarks": "36",
+                "totalMarks": "85",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21KSK37",
+                "subjectName": "SAMSKRUTHIKA KANNADA",
+                "iaMarks": "39",
+                "eaMarks": "42",
+                "totalMarks": "81",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21SCR36",
+                "subjectName": "SOCIAL CONNECT AND RESPONSIBILITY",
+                "iaMarks": "48",
+                "eaMarks": "50",
+                "totalMarks": "98",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21MAT31",
+                "subjectName": "TRANSFORM CALCULUS, FOURIER SERIES AND NUMERICAL TECHNIQUES",
+                "iaMarks": "32",
+                "eaMarks": "10",
+                "totalMarks": "42",
+                "result": "F"
+            }
+        ]
+    },
+    {
+        "studentName": " ANUSHREE K",
+        "studentUSN": " 4CB21IS004",
+        "subjects": [
+            {
+                "subjectCode": "21CS33",
+                "subjectName": "ANALOG AND DIGITAL ELECTRONICS",
+                "iaMarks": "46",
+                "eaMarks": "32",
+                "totalMarks": "78",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21CS34",
+                "subjectName": "COMPUTER ORGANIZATION AND ARCHITECTURE",
+                "iaMarks": "49",
+                "eaMarks": "44",
+                "totalMarks": "93",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21CS32",
+                "subjectName": "DATA STRUCTURES AND APPLICATIONS",
+                "iaMarks": "47",
+                "eaMarks": "28",
+                "totalMarks": "75",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21CSL381",
+                "subjectName": "MASTERING OFFICE",
+                "iaMarks": "50",
+                "eaMarks": "50",
+                "totalMarks": "100",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21CSL35",
+                "subjectName": "OBJECT ORIENTED PROGRAMMING WITH JAVA LABORATORY",
+                "iaMarks": "50",
+                "eaMarks": "49",
+                "totalMarks": "99",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21KSK37",
+                "subjectName": "SAMSKRUTHIKA KANNADA",
+                "iaMarks": "46",
+                "eaMarks": "47",
+                "totalMarks": "93",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21SCR36",
+                "subjectName": "SOCIAL CONNECT AND RESPONSIBILITY",
+                "iaMarks": "48",
+                "eaMarks": "50",
+                "totalMarks": "98",
+                "result": "P"
+            },
+            {
+                "subjectCode": "21MAT31",
+                "subjectName": "TRANSFORM CALCULUS, FOURIER SERIES AND NUMERICAL TECHNIQUES",
+                "iaMarks": "41",
+                "eaMarks": "38",
+                "totalMarks": "79",
+                "result": "P"
+            }
+        ]
+    }
+]

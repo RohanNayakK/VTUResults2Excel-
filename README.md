@@ -53,6 +53,21 @@ npm run buildPythonExecutable
 This will create an executable file & overwrite existing canaraFetch.exe file in the python folder.
 
 
+# How to build the project for production
+
+Run the following command in the terminal
+npm run package
+
+This will create a folder named "out" in the project directory.
+The out folder will contain the executable file for the application.
+
+Imp Note : You have to copy python folder to the vtuResults2ExcelTool-win32-x64 folder manually.
+The python folder contains the python script/exe & the Excel template file.
+
+
+
+
+
 
 
 

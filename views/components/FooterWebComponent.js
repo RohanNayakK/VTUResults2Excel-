@@ -10,10 +10,17 @@ left: 0;
 width: 100vw;
 height: 5vh;
 }
+
+#projGroupName{
+    color: goldenrod;
+}
+a{
+    color: white;
+}
 </style>
 
-<footer id="footer-section" >&copy All Rights Reserved - CEC - Designed & Developed by PO4(2023)- I.S.E Dept
-<a href="../views/credits.html">Credits</a>
+<footer id="footer-section" >&copy All Rights Reserved - CEC - Designed & Developed by <b id="projGroupName">CEC/ISE/Project/2022-23/P04- I.S.E Dept</b>
+<a href="../views/credits.html">->Credits (Click Here)</a>
 <span id="footerLinks">
 </span>
 </footer>
