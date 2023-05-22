@@ -13,10 +13,55 @@
   <app-header></app-header>
 
   <article style="height: max-content;width:100vw;position: absolute;top:15vh; display: flex;flex-direction: column;justify-content: center">
-    <h1>Help Page Coming Soon...</h1>
+    <h1>
+      <i class="fa-solid fa-circle-info"></i>
+      Help Page
+      <span>
+        <a href="./index.html">
+          <i class="fa-solid fa-arrow-left"></i>
+     Back to home
+    </a>
+   </span>
+    </h1>
+    <article>
+      <h4>How to Use : ( Video Demo )</h4>
+      <video width="800" controls>
+        <source src="assets/how_to_use.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </article>
+
+    <article>
+      <h4>Important Assets :</h4>
+      <p>This drive link contains assets like reports, papers, documents related to the project</p>
+        <b id="driveLink">
+            https://drive.google.com/drive/folders/1dPbYJVqmwaFluteXn7w5MbM6nokpeLiU?usp=share_link
+        </b>
+    </article>
+
+    <article>
+      <h4>Important Note :</h4>
+      <li>Make sure you have a stable internet connection</li>
+      <li>If you input wrong capctha and page gets stuck , either close and restart the application
+      or go to options on Menu and Select Refresh Screen Freeze ( last option )</li>
+      <li>VTU server can be down sometimes, application will show the error that VTU Server is down</li>
+      <li>This app is in early stage and has scope for improvement, so some features can still be buggy or improved</li>
+    </article>
+
+    <article>
+      <h4>Developer Contact :</h4>
+      <li>Rohan Nayak K - rnk2214@gmail.com</li>
+      <li>Kedar C Pai - kedarpai1503@gmail.com</li>
+    </article>
+
   </article>
 
     <app-footer></app-footer>
+  <script>
+      document.getElementById("driveLink").addEventListener("click",()=>{
+          window.open("https://drive.google.com/drive/folders/1dPbYJVqmwaFluteXn7w5MbM6nokpeLiU?usp=sharing")
+      })
+  </script>
 
 
   </body>

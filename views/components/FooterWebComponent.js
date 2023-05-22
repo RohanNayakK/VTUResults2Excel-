@@ -9,6 +9,7 @@ bottom: 0;
 left: 0;
 width: 100vw;
 height: 5vh;
+background: #0e1419;
 }
 
 #projGroupName{

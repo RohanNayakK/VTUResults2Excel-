@@ -180,7 +180,7 @@ try:
         sortedSubjectsList.append(
             subject["subjectCode"] + " - " + subject["subjectName"])
         subjectCodeList.append(subject["subjectCode"])
-        sortedSubjectsList.sort()
+#         sortedSubjectsList.sort()
 
     acdYearFirst = acdYear.split("-")[0]
 
@@ -259,11 +259,15 @@ try:
                 studentDataStartingRowIndex+count)).value = subject["totalMarks"]
 
             # Check if SEE marks is not greater than or equal to 21 then set fail manually
-            if int(subject["eaMarks"]) < 21:
+            if (int(subject["result"])=="F":
                 failedInAnySubject = True
                 # Go to next cell to right ( Grade Cell ) and set value to F
                 sht.range(cellAddressJson[subIndex][3]+str(
                     studentDataStartingRowIndex+count)).value = "F"
+
+            if(subject["result"]=="P"):
+                sht.range(cellAddressJson[subIndex][3]+str(
+                    studentDataStartingRowIndex+count)).value = "P"
 
             # Check if student is absent in any subject
             if(subject["result"]=="A"):
