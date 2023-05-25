@@ -1,9 +1,10 @@
 {
 	"name": "vtuResults2ExcelTool",
-	"author": "Rohan Nayak & Kedar Pai",
+	"author": "PO4",
 	"version": "1.0.0",
 	"main": "main.js",
 	"dependencies": {
+		"electron": "^20.1.0",
 		"@electron/remote": "^2.0.8",
 		"electron-alert": "^0.1.20",
 		"electron-packager": "^17.1.1",
@@ -17,8 +18,5 @@
 		"buildPythonExecutable": "pyinstaller --onefile python/canaraFetch.py && npm run cleanAfterBuild",
 		"cleanAfterBuild": "rd /s /q build && cd dist && copy .\\canaraFetch.exe ..\\python\\ && cd .. && rd /s /q dist && del canaraFetch.spec",
 		"package": "electron-packager . --overwrite --platform=win32 --arch=x64 --icon=./Logo.ico --prune=true --out=./"
-	},
-	"devDependencies": {
-		"electron": "^20.1.0"
 	}
 }

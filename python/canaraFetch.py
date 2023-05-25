@@ -21,7 +21,7 @@ filename = sys.argv[9]
 
 #Testing purposes
 
-# filePath = "E:/"
+# filePath = "D:/"
 # dept = "INFORMATION SCIENCE AND ENGINEERING"
 # sem = "3"
 # examType = "JANUARY-FEBRUARY"
@@ -259,15 +259,15 @@ try:
                 studentDataStartingRowIndex+count)).value = subject["totalMarks"]
 
             # Check if SEE marks is not greater than or equal to 21 then set fail manually
-            if (int(subject["result"])=="F":
+            if (subject["result"]=="F"):
                 failedInAnySubject = True
                 # Go to next cell to right ( Grade Cell ) and set value to F
                 sht.range(cellAddressJson[subIndex][3]+str(
                     studentDataStartingRowIndex+count)).value = "F"
 
-            if(subject["result"]=="P"):
-                sht.range(cellAddressJson[subIndex][3]+str(
-                    studentDataStartingRowIndex+count)).value = "P"
+#             if(subject["result"]=="P" and "PROJECT WORK" in subject["subjectName"]):
+#                 sht.range(cellAddressJson[subIndex][3]+str(
+#                     studentDataStartingRowIndex+count)).value = "P"
 
             # Check if student is absent in any subject
             if(subject["result"]=="A"):

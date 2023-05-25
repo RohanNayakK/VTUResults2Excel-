@@ -401,7 +401,7 @@ ipcMain.on("sentData",(event,data)=>{
 
      let writeData = JSON.stringify(data.data);
 
-     fs.writeFileSync('./python/data.json', writeData);
+     fs.writeFileSync(path.join(__dirname, '/python/data.json'), writeData);
 
     mainWindow.loadFile(path.join(__dirname, '/views/generateExcel.html'))
         .then(()=>{
