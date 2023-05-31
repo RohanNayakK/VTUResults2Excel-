@@ -64,6 +64,7 @@ The out folder will contain the executable file for the application.
 Imp Note : You have to copy python folder to the vtuResults2ExcelTool-win32-x64 folder manually.
 The python folder contains the python script/exe & the Excel template file.
 
+Imp Note : Dont add devDependencies while building project ( move all dev dependencies that are application critical to dependencies)
 
 
 
